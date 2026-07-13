@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Juan José — Data & Solutions Architecture Portfolio</title>
+<meta name="description" content="Data architecture & analytics engineering portfolio: real projects documented as architecture decisions.">
+<style>
+  :root{
+    --bg:#0d1117; --bg2:#131a24; --card:#161d29; --line:#243044;
+    --tx:#e6edf3; --mut:#8b98a9; --acc:#38bdf8; --acc2:#34d399; --chip:#1f2937;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:linear-gradient(180deg,#0b0f16,#0d1117 40%);color:var(--tx);
+    font-family:'Segoe UI',system-ui,-apple-system,Arial,sans-serif;line-height:1.6}
+  a{color:var(--acc);text-decoration:none}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+  header.hero{padding:80px 0 40px;border-bottom:1px solid var(--line)}
+  .eyebrow{color:var(--acc2);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px;margin:0 0 14px}
+  h1{font-size:clamp(30px,5vw,46px);line-height:1.15;margin:0 0 16px}
+  h1 .grad{background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{color:var(--mut);font-size:18px;max-width:760px;margin:0 0 22px}
+  .hero-links a{display:inline-block;margin-right:10px;border:1px solid var(--line);padding:8px 14px;border-radius:10px;color:var(--tx);font-size:14px}
+  .hero-links a:hover{border-color:var(--acc)}
+  .tags{margin-top:26px;display:flex;flex-wrap:wrap;gap:8px}
+  .tags span{font-size:12px;color:var(--mut);border:1px solid var(--line);padding:4px 10px;border-radius:999px}
+  section.cases{padding:48px 0 20px}
+  .sec-title{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin:0 0 24px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin-bottom:26px}
+  .card:hover{border-color:#31435c}
+  .card-head{display:flex;gap:16px;align-items:flex-start;margin-bottom:12px}
+  .num{font-size:14px;font-weight:800;color:#0b0f16;background:linear-gradient(135deg,var(--acc),var(--acc2));
+    width:38px;height:38px;border-radius:10px;display:grid;place-items:center;flex:0 0 auto}
+  .card h3{margin:2px 0 2px;font-size:21px}
+  .domain{margin:0;color:var(--acc2);font-size:13px;font-weight:600}
+  .summary{color:#cdd7e2;margin:6px 0 16px}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+  .chip{font-size:12px;color:#bcd;background:var(--chip);border:1px solid var(--line);padding:4px 10px;border-radius:8px}
+  .diagram{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:18px;overflow:hidden}
+  .btn{display:inline-block;border:1px solid var(--acc);color:var(--acc);padding:9px 16px;border-radius:10px;font-weight:600;font-size:14px}
+  .btn:hover{background:var(--acc);color:#0b0f16}
+  footer{border-top:1px solid var(--line);margin-top:30px;padding:36px 0 60px;color:var(--mut);font-size:14px}
+  footer b{color:var(--tx)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Portfolio</p>
+    <h1>Data &amp; Solutions Architecture<br><span class="grad">&amp; Analytics Engineering</span></h1>
+    <p class="lede">Engineer with a hybrid background — electronics &amp; automation, a master's degree, and data.
+      These are real production projects, recreated with synthetic data and no confidential information,
+      documented as <b style="color:#cdd7e2">architecture decisions</b>: the problem, the constraints, the
+      alternatives evaluated, and the rationale behind each choice.</p>
+    <div class="hero-links">
+      <a href="https://github.com/jjchamorroi/juanjose-data-portfolio" target="_blank" rel="noopener">GitHub repo ↗</a>
+      <a href="#case-01">Jump to cases ↓</a>
+    </div>
+    <div class="tags">
+      <span>AWS</span><span>Snowflake</span><span>Apache Iceberg</span><span>Terraform</span>
+      <span>Glue · Athena</span><span>ECS Fargate</span><span>Python</span><span>Cortex AI</span>
+    </div>
+  </div>
+</header>
+<section class="cases">
+  <div class="wrap">
+    <p class="sec-title">Case studies</p>
+    
+    <article class="card" id="case-01">
+      <div class="card-head">
+        <span class="num">01</span>
+        <div><h3>Social media analytics data lake</h3><p class="domain">Data architecture · medallion</p></div>
+      </div>
+      <p class="summary">Serverless AWS data lake ingesting five social platforms into a RAW→CURATED medallion with Apache Iceberg, queryable in Athena, with daily Step Functions orchestration, per-branch SNS failure alerts and an LLM sentiment stage.</p>
+      <div class="chips"><span class="chip">S3</span><span class="chip">Apache Iceberg</span><span class="chip">AWS Glue</span><span class="chip">Athena</span><span class="chip">Step Functions</span><span class="chip">EventBridge</span><span class="chip">SNS</span><span class="chip">Terraform</span><span class="chip">Python</span></div>
+      <div class="diagram"><svg preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 720" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 z" fill="#5b6b7b"/>
+    </marker>
+    <style>
+      .lbl{font-size:13px;fill:#1f2d3d;} .lblb{font-size:13px;font-weight:700;fill:#1f2d3d;}
+      .sub{font-size:10.5px;fill:#5b6b7b;} .title{font-size:16px;font-weight:700;fill:#1f2d3d;}
+      .phase{font-size:12px;font-weight:700;} .flow{stroke:#5b6b7b;stroke-width:1.6;fill:none;marker-end:url(#arrow);}
+      .split{stroke:#3ba368;stroke-width:1.6;fill:none;marker-end:url(#arrow);}
+      .join{stroke:#c05364;stroke-width:1.6;fill:none;marker-end:url(#arrow);}
+    </style>
+  </defs>
+  <rect width="1000" height="720" fill="#ffffff"/>
+  <text x="30" y="32" class="title">Social media data lake — serverless medallion on AWS</text>
+  <text x="30" y="52" class="sub">Daily batch · fan-out to 6 parallel jobs · fan-in · sequential LLM stage · SQL on CURATED only</text>
+
+  <!-- trigger + orchestrator -->
+  <rect x="30" y="72" width="160" height="50" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="110" y="93" text-anchor="middle" class="lblb">EventBridge</text>
+  <text x="110" y="110" text-anchor="middle" class="sub">daily cron (early AM)</text>
+  <rect x="220" y="72" width="190" height="50" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="315" y="93" text-anchor="middle" class="lblb">Step Functions</text>
+  <text x="315" y="110" text-anchor="middle" class="sub">state machine / orchestration</text>
+  <path class="flow" d="M190,97 L218,97"/>
+
+  <!-- PHASE 1 container -->
+  <rect x="30" y="150" width="600" height="300" rx="12" fill="#f6fbf7" stroke="#3ba368" stroke-dasharray="6 4"/>
+  <text x="46" y="172" class="phase" fill="#2f8556">PHASE 1 · PARALLEL — Map state fans out to 6 AWS Glue jobs</text>
+
+  <!-- split node -->
+  <circle cx="120" cy="215" r="16" fill="#eafaf1" stroke="#3ba368"/>
+  <text x="120" y="219" text-anchor="middle" class="lblb" font-size="14">⑃</text>
+  <text x="120" y="248" text-anchor="middle" class="sub">fan-out</text>
+  <path class="flow" d="M315,122 L315,150 M120,150 L120,197" />
+  <path class="flow" d="M315,150 C200,150 160,175 133,205"/>
+
+  <!-- 6 job boxes -->
+  <g>
+    <rect x="175" y="185" width="130" height="38" rx="8" fill="#eafaf1" stroke="#3ba368"/><text x="240" y="209" text-anchor="middle" class="lbl">Facebook</text>
+    <rect x="320" y="185" width="130" height="38" rx="8" fill="#eafaf1" stroke="#3ba368"/><text x="385" y="209" text-anchor="middle" class="lbl">Instagram</text>
+    <rect x="465" y="185" width="130" height="38" rx="8" fill="#eafaf1" stroke="#3ba368"/><text x="530" y="209" text-anchor="middle" class="lbl">TikTok</text>
+    <rect x="175" y="233" width="130" height="38" rx="8" fill="#eafaf1" stroke="#3ba368"/><text x="240" y="257" text-anchor="middle" class="lbl">X (Twitter)</text>
+    <rect x="320" y="233" width="130" height="38" rx="8" fill="#eafaf1" stroke="#3ba368"/><text x="385" y="257" text-anchor="middle" class="lbl">YouTube</text>
+    <rect x="465" y="233" width="130" height="38" rx="8" fill="#eafaf1" stroke="#3ba368"/><text x="530" y="257" text-anchor="middle" class="lbl">Comments</text>
+  </g>
+  <path class="split" d="M136,213 L173,204"/><path class="split" d="M136,216 L318,204"/><path class="split" d="M136,218 L463,204"/>
+  <path class="split" d="M136,221 L173,252"/><path class="split" d="M136,224 L318,252"/><path class="split" d="M136,226 L463,252"/>
+
+  <!-- RAW and CURATED inside phase 1 -->
+  <rect x="90" y="300" width="230" height="56" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
+  <text x="205" y="323" text-anchor="middle" class="lblb">RAW layer (S3)</text>
+  <text x="205" y="341" text-anchor="middle" class="sub">raw JSONL · history · append-only</text>
+  <rect x="350" y="300" width="260" height="56" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
+  <text x="480" y="319" text-anchor="middle" class="lblb">CURATED — Apache Iceberg</text>
+  <text x="480" y="337" text-anchor="middle" class="sub">auto-aligned schema · versioned · MERGE</text>
+  <path class="flow" d="M320,328 L348,328"/>
+  <path class="flow" d="M385,271 L385,298" /><path class="flow" d="M240,271 L215,298"/>
+
+  <!-- join node -->
+  <circle cx="480" cy="400" r="16" fill="#fbe3e7" stroke="#c05364"/>
+  <text x="480" y="405" text-anchor="middle" class="lblb" font-size="14">⑂</text>
+  <text x="480" y="430" text-anchor="middle" class="sub">fan-in (wait all)</text>
+  <path class="flow" d="M480,356 L480,383"/>
+
+  <!-- PHASE 2 -->
+  <rect x="670" y="150" width="300" height="300" rx="12" fill="#fdeef0" stroke="#c05364" stroke-dasharray="6 4"/>
+  <text x="686" y="172" class="phase" fill="#a23a4a">PHASE 2 · SEQUENTIAL — runs only after all 6 finish</text>
+  <rect x="720" y="250" width="200" height="70" rx="9" fill="#fbe3e7" stroke="#c05364"/>
+  <text x="820" y="278" text-anchor="middle" class="lblb">Sentiment analysis</text>
+  <text x="820" y="297" text-anchor="middle" class="sub">LLM over comments · rate-limited</text>
+  <path class="join" d="M496,398 C620,392 660,320 718,300"/>
+  <path class="flow" d="M820,320 C820,360 640,380 496,400"/>
+
+  <!-- catalog + athena -->
+  <rect x="350" y="480" width="260" height="52" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="480" y="502" text-anchor="middle" class="lblb">Glue Data Catalog</text>
+  <text x="480" y="519" text-anchor="middle" class="sub">Iceberg table registry</text>
+  <path class="flow" d="M480,416 L480,478"/>
+  <rect x="350" y="560" width="260" height="58" rx="9" fill="#e9f6f8" stroke="#3a9bad"/>
+  <text x="480" y="583" text-anchor="middle" class="lblb">Amazon Athena — SQL</text>
+  <text x="480" y="601" text-anchor="middle" class="sub">queries CURATED only · BI / dashboards</text>
+  <path class="flow" d="M480,532 L480,558"/>
+
+  <!-- IaC -->
+  <rect x="670" y="480" width="300" height="138" rx="12" fill="#f6f8fa" stroke="#b8c2cc"/>
+  <text x="820" y="504" text-anchor="middle" class="phase" fill="#5b6b7b">INFRASTRUCTURE AS CODE</text>
+  <text x="820" y="528" text-anchor="middle" class="sub">Terraform · reusable modules</text>
+  <text x="820" y="548" text-anchor="middle" class="sub">glue · iam · s3 · eventbridge+stepfunction</text>
+  <text x="820" y="574" text-anchor="middle" class="sub">environments: sandbox / QA / prod</text>
+  <text x="820" y="600" text-anchor="middle" class="sub">one `terraform apply` per environment</text>
+  <!-- SNS failure notifications -->
+  <marker id="rednote" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L7,3 L0,6 z" fill="#c05364"/></marker>
+  <rect x="700" y="58" width="250" height="48" rx="9" fill="#fdeef0" stroke="#c05364"/>
+  <text x="825" y="79" text-anchor="middle" class="lblb">SNS — failure alerts</text>
+  <text x="825" y="96" text-anchor="middle" class="sub">each state: Catch (States.ALL) → publish</text>
+  <path d="M600,150 C640,120 680,110 715,104" fill="none" stroke="#c05364" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#rednote)"/>
+  <path d="M880,250 C905,190 880,135 858,108" fill="none" stroke="#c05364" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#rednote)"/>
+  <text x="660" y="120" text-anchor="middle" class="sub" fill="#c05364">on failure</text>
+</svg>
+</div>
+      <a class="btn" href="https://github.com/jjchamorroi/juanjose-data-portfolio/blob/main/cases/01-social-media-data-lake/README.md" target="_blank" rel="noopener">Read full case →</a>
+    </article>
+    <article class="card" id="case-02">
+      <div class="card-head">
+        <span class="num">02</span>
+        <div><h3>Agentic analytics over the data warehouse</h3><p class="domain">AI over data · text-to-SQL + semantic search</p></div>
+      </div>
+      <p class="summary">A conversational analytics layer: Snowflake Cortex agents answer natural-language questions by combining text-to-SQL over a semantic layer, vector search and MCP tool servers — behind a FastAPI API that persists conversations in PostgreSQL (persist-then-call resilience) and a Keycloak-authenticated chat SPA.</p>
+      <div class="chips"><span class="chip">Snowflake Cortex</span><span class="chip">Semantic Views</span><span class="chip">vector search</span><span class="chip">MCP</span><span class="chip">FastAPI</span><span class="chip">PostgreSQL</span><span class="chip">Keycloak</span><span class="chip">SPA</span></div>
+      <div class="diagram"><svg preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 720" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 z" fill="#5b6b7b"/>
+    </marker>
+    <style>
+      .lbl{font-size:12.5px;fill:#1f2d3d;} .lblb{font-size:12.5px;font-weight:700;fill:#1f2d3d;}
+      .sub{font-size:10px;fill:#5b6b7b;} .title{font-size:16px;font-weight:700;fill:#1f2d3d;}
+      .phase{font-size:11.5px;font-weight:700;} .flow{stroke:#5b6b7b;stroke-width:1.6;fill:none;marker-end:url(#arrow);}
+      .route{stroke:#8a5a00;stroke-width:1.5;fill:none;marker-end:url(#arrow);stroke-dasharray:4 3;}
+      .dash{stroke:#9aa7b4;stroke-width:1.3;fill:none;stroke-dasharray:4 3;marker-end:url(#arrow);}
+    </style>
+  </defs>
+  <rect width="1000" height="720" fill="#ffffff"/>
+  <text x="30" y="28" class="title">Agentic analytics over the data warehouse (Snowflake Cortex)</text>
+  <text x="30" y="48" class="sub">NL chat → agent routing → text-to-SQL + semantic search + tool servers · grounded on governed data · conversations persisted</text>
+
+  <!-- client + orchestration tier -->
+  <rect x="30" y="66" width="150" height="56" rx="9" fill="#e9f6f8" stroke="#3a9bad"/>
+  <text x="105" y="89" text-anchor="middle" class="lblb">SPA chat UI</text>
+  <text x="105" y="106" text-anchor="middle" class="sub">Vite · charts + chips</text>
+
+  <rect x="210" y="66" width="185" height="56" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="302" y="86" text-anchor="middle" class="lblb">FastAPI orchestration</text>
+  <text x="302" y="102" text-anchor="middle" class="sub">1 endpoint · typed `parts`</text>
+  <text x="302" y="115" text-anchor="middle" class="sub">persist-then-call · retry UX</text>
+
+  <rect x="425" y="66" width="200" height="56" rx="9" fill="#efeafd" stroke="#7a5fc0"/>
+  <text x="525" y="86" text-anchor="middle" class="lblb">Cortex Agent (LLM)</text>
+  <text x="525" y="102" text-anchor="middle" class="sub">routing rules · cites sources</text>
+  <text x="525" y="115" text-anchor="middle" class="sub">hides SQL/schema</text>
+
+  <path class="flow" d="M180,88 L208,88"/><path class="flow" d="M208,104 L182,104"/>
+  <path class="flow" d="M395,92 L423,92"/>
+  <text x="410" y="84" text-anchor="middle" class="sub">:run</text>
+
+  <!-- identity + persistence -->
+  <rect x="650" y="60" width="150" height="52" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="725" y="81" text-anchor="middle" class="lbl">Keycloak (OIDC)</text>
+  <text x="725" y="97" text-anchor="middle" class="sub">SPA auth · user scope</text>
+  <rect x="820" y="60" width="150" height="52" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
+  <text x="895" y="81" text-anchor="middle" class="lbl">PostgreSQL</text>
+  <text x="895" y="97" text-anchor="middle" class="sub">threads + messages</text>
+  <path class="dash" d="M180,74 C420,36 560,50 648,74"/>
+  <path class="flow" d="M395,80 C520,44 720,52 818,74"/>
+  <text x="470" y="44" text-anchor="middle" class="sub" fill="#5b6b7b">authenticate · persist user message first</text>
+
+  <!-- Snowflake box -->
+  <rect x="30" y="190" width="940" height="470" rx="12" fill="#f7f9fc" stroke="#b8c2cc" stroke-dasharray="6 4"/>
+  <text x="46" y="213" class="phase" fill="#5b6b7b">SNOWFLAKE — governed data + AI (no data leaves the warehouse)</text>
+
+  <!-- 4 tools -->
+  <rect x="60" y="234" width="200" height="54" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="160" y="256" text-anchor="middle" class="lblb">Cortex Analyst</text>
+  <text x="160" y="273" text-anchor="middle" class="sub">text-to-SQL (quantitative)</text>
+  <rect x="285" y="234" width="200" height="54" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="385" y="256" text-anchor="middle" class="lblb">Cortex Search</text>
+  <text x="385" y="273" text-anchor="middle" class="sub">semantic / vector search</text>
+  <rect x="510" y="234" width="200" height="54" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="610" y="256" text-anchor="middle" class="lblb">MCP tool servers</text>
+  <text x="610" y="273" text-anchor="middle" class="sub">relationships · entity detail</text>
+  <rect x="735" y="234" width="205" height="54" rx="9" fill="#fdeef0" stroke="#c05364"/>
+  <text x="837" y="256" text-anchor="middle" class="lblb">Action: stored proc</text>
+  <text x="837" y="273" text-anchor="middle" class="sub">email report (on request)</text>
+
+  <path class="route" d="M480,124 C360,175 250,205 175,232"/>
+  <path class="route" d="M510,124 C450,180 410,208 388,232"/>
+  <path class="route" d="M560,124 C590,180 605,208 612,232"/>
+  <path class="route" d="M590,122 C720,175 800,205 835,232"/>
+  <text x="300" y="205" text-anchor="middle" class="sub" fill="#8a5a00">routing rules by question type</text>
+
+  <!-- semantic layer -->
+  <rect x="60" y="330" width="425" height="58" rx="9" fill="#eafaf1" stroke="#3ba368"/>
+  <text x="272" y="353" text-anchor="middle" class="lblb">Semantic layer — Semantic Views</text>
+  <text x="272" y="371" text-anchor="middle" class="sub">friendly names + vetted calculations · governance boundary (no raw columns)</text>
+  <path class="flow" d="M160,288 L200,328"/>
+  <rect x="510" y="330" width="200" height="58" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
+  <text x="610" y="353" text-anchor="middle" class="lblb">Embeddings index</text>
+  <text x="610" y="371" text-anchor="middle" class="sub">from documents / transcripts</text>
+  <path class="flow" d="M385,288 L520,328"/>
+
+  <!-- base data -->
+  <rect x="60" y="440" width="200" height="54" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="160" y="462" text-anchor="middle" class="lbl">Base tables</text>
+  <text x="160" y="478" text-anchor="middle" class="sub">governed source data</text>
+  <rect x="285" y="440" width="200" height="54" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="385" y="462" text-anchor="middle" class="lbl">Dynamic Tables</text>
+  <text x="385" y="478" text-anchor="middle" class="sub">incremental refresh</text>
+  <rect x="510" y="440" width="200" height="54" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="610" y="462" text-anchor="middle" class="lbl">Documents (PDF/text)</text>
+  <text x="610" y="478" text-anchor="middle" class="sub">source for embeddings</text>
+  <rect x="735" y="440" width="205" height="54" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="837" y="462" text-anchor="middle" class="lbl">Virtual warehouse</text>
+  <text x="837" y="478" text-anchor="middle" class="sub">shared compute · query timeouts</text>
+  <path class="flow" d="M200,388 L180,438"/>
+  <path class="flow" d="M330,388 L360,438"/>
+  <path class="flow" d="M610,388 L610,438"/>
+
+  <text x="500" y="560" text-anchor="middle" class="sub" fill="#5b6b7b">Grounding: quantitative answers resolve through the Semantic View; "find/where" answers resolve through the embeddings index; both are citable.</text>
+  <text x="500" y="588" text-anchor="middle" class="sub" fill="#5b6b7b">Cross-reference keys let the agent join content (from search) with metrics (from SQL) in a single answer.</text>
+  <text x="500" y="628" text-anchor="middle" class="sub" fill="#5b6b7b">Response parts (text · Vega-Lite chart · suggested queries) are normalized by FastAPI and rendered by the SPA.</text>
+</svg>
+</div>
+      <a class="btn" href="https://github.com/jjchamorroi/juanjose-data-portfolio/blob/main/cases/02-agentic-analytics-warehouse/README.md" target="_blank" rel="noopener">Read full case →</a>
+    </article>
+    <article class="card" id="case-03">
+      <div class="card-head">
+        <span class="num">03</span>
+        <div><h3>Cloud architecture & IaC: one blueprint, two apps</h3><p class="domain">Cloud / end-to-end platform</p></div>
+      </div>
+      <p class="summary">A reusable Terraform platform on ECS Fargate + shared ALB + CloudFront/S3, instantiated for two production apps that share the backbone but differ in one deliberate choice — the database (PostgreSQL for a transactional app, DocumentDB for a national-scale event app).</p>
+      <div class="chips"><span class="chip">Terraform</span><span class="chip">ECS Fargate</span><span class="chip">ALB</span><span class="chip">CloudFront + S3</span><span class="chip">RDS PostgreSQL</span><span class="chip">DocumentDB</span><span class="chip">WAF</span><span class="chip">Keycloak</span><span class="chip">k6</span></div>
+      <div class="diagram"><svg preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 z" fill="#5b6b7b"/>
+    </marker>
+    <style>
+      .lbl{font-size:12.5px;fill:#1f2d3d;} .lblb{font-size:12.5px;font-weight:700;fill:#1f2d3d;}
+      .sub{font-size:10px;fill:#5b6b7b;} .title{font-size:16px;font-weight:700;fill:#1f2d3d;}
+      .phase{font-size:11.5px;font-weight:700;} .flow{stroke:#5b6b7b;stroke-width:1.6;fill:none;marker-end:url(#arrow);}
+      .dash{stroke:#9aa7b4;stroke-width:1.3;fill:none;stroke-dasharray:4 3;marker-end:url(#arrow);}
+    </style>
+  </defs>
+  <rect width="1000" height="640" fill="#ffffff"/>
+  <text x="30" y="30" class="title">Cloud platform (Terraform) — ECS Fargate + shared ALB + CloudFront</text>
+  <text x="30" y="50" class="sub">One reusable blueprint · per-environment tfvars (sandbox / QA / prod) · proven at national scale</text>
+
+  <!-- user -->
+  <rect x="30" y="90" width="110" height="50" rx="9" fill="#e9f6f8" stroke="#3a9bad"/>
+  <text x="85" y="120" text-anchor="middle" class="lblb">Users</text>
+
+  <!-- edge -->
+  <rect x="175" y="70" width="150" height="46" rx="9" fill="#fdeef0" stroke="#c05364"/>
+  <text x="250" y="90" text-anchor="middle" class="lblb">WAF</text>
+  <text x="250" y="106" text-anchor="middle" class="sub">edge protection</text>
+  <rect x="175" y="128" width="150" height="52" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="250" y="150" text-anchor="middle" class="lblb">CloudFront</text>
+  <text x="250" y="167" text-anchor="middle" class="sub">CDN · TLS (ACM)</text>
+  <path class="flow" d="M140,115 L173,110"/>
+  <path class="flow" d="M140,120 L173,150"/>
+
+  <!-- S3 static -->
+  <rect x="360" y="70" width="170" height="52" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
+  <text x="445" y="91" text-anchor="middle" class="lblb">S3 — static SPA</text>
+  <text x="445" y="108" text-anchor="middle" class="sub">private origin (OAC)</text>
+  <path class="flow" d="M325,145 C340,120 350,105 358,98"/>
+  <text x="352" y="135" class="sub">assets</text>
+
+  <!-- ALB -->
+  <rect x="360" y="140" width="170" height="56" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="445" y="162" text-anchor="middle" class="lblb">Shared ALB</text>
+  <text x="445" y="179" text-anchor="middle" class="sub">host/path rules → target groups</text>
+  <path class="flow" d="M325,160 L358,165"/>
+  <text x="342" y="200" class="sub">/api/*</text>
+
+  <!-- VPC container -->
+  <rect x="360" y="220" width="610" height="300" rx="12" fill="#f7f9fc" stroke="#b8c2cc" stroke-dasharray="6 4"/>
+  <text x="376" y="243" class="phase" fill="#5b6b7b">VPC — private subnets (no public IPs) · persistence = the one swappable module (RDS ↔ DocumentDB)</text>
+
+  <!-- ECS services -->
+  <rect x="390" y="260" width="200" height="60" rx="9" fill="#eafaf1" stroke="#3ba368"/>
+  <text x="490" y="283" text-anchor="middle" class="lblb">ECS Fargate — API</text>
+  <text x="490" y="300" text-anchor="middle" class="sub">FastAPI · autoscaled tasks</text>
+  <rect x="390" y="335" width="200" height="52" rx="9" fill="#eafaf1" stroke="#3ba368" stroke-dasharray="3 2"/>
+  <text x="490" y="356" text-anchor="middle" class="lbl">ECS — additional service</text>
+  <text x="490" y="372" text-anchor="middle" class="sub">SSR / worker (same ALB)</text>
+  <path class="flow" d="M445,196 C445,220 470,245 486,258"/>
+  <path class="dash" d="M460,196 C520,225 540,300 540,333"/>
+
+  <!-- data stores -->
+  <rect x="640" y="260" width="150" height="56" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="715" y="282" text-anchor="middle" class="lbl">RDS PostgreSQL</text>
+  <text x="715" y="299" text-anchor="middle" class="sub">App A · transactional (ACID)</text>
+  <rect x="810" y="260" width="140" height="56" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="880" y="282" text-anchor="middle" class="lbl">DocumentDB</text>
+  <text x="880" y="299" text-anchor="middle" class="sub">App B · event scale</text>
+  <path class="flow" d="M590,288 L638,288"/>
+  <path class="dash" d="M590,278 C700,255 780,258 808,282"/>
+
+  <rect x="640" y="335" width="150" height="52" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="715" y="356" text-anchor="middle" class="lbl">Secrets Manager</text>
+  <text x="715" y="372" text-anchor="middle" class="sub">config injected</text>
+  <rect x="810" y="335" width="140" height="52" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="880" y="356" text-anchor="middle" class="lbl">ECR</text>
+  <text x="880" y="372" text-anchor="middle" class="sub">container images</text>
+  <path class="flow" d="M590,300 C610,325 625,340 638,352"/>
+  <path class="dash" d="M590,310 C700,360 800,360 810,358"/>
+
+  <!-- external services -->
+  <rect x="390" y="410" width="200" height="50" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="490" y="431" text-anchor="middle" class="lbl">Keycloak (OIDC)</text>
+  <text x="490" y="447" text-anchor="middle" class="sub">JWT · API validates via JWKS</text>
+  <rect x="640" y="410" width="150" height="50" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="715" y="431" text-anchor="middle" class="lbl">S3 media</text>
+  <text x="715" y="447" text-anchor="middle" class="sub">presigned URLs</text>
+  <rect x="810" y="410" width="140" height="50" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="880" y="431" text-anchor="middle" class="lbl">SES</text>
+  <text x="880" y="447" text-anchor="middle" class="sub">transactional email</text>
+  <path class="dash" d="M490,387 L490,408"/>
+  <path class="dash" d="M560,320 C620,390 690,400 710,408"/>
+  <path class="dash" d="M560,315 C700,400 830,400 855,408"/>
+
+  <!-- IaC footer -->
+  <rect x="30" y="470" width="300" height="140" rx="12" fill="#f6f8fa" stroke="#b8c2cc"/>
+  <text x="180" y="494" text-anchor="middle" class="phase" fill="#5b6b7b">TERRAFORM (IaC)</text>
+  <text x="180" y="518" text-anchor="middle" class="sub">modules: vpc · ecr · secrets · frontend</text>
+  <text x="180" y="536" text-anchor="middle" class="sub">public_alb · ecs_backend · ecs_additional</text>
+  <text x="180" y="554" text-anchor="middle" class="sub">rds · documentdb · dns · waf · bastion_ssm</text>
+  <text x="180" y="578" text-anchor="middle" class="sub">names = project_name + environment</text>
+  <text x="180" y="596" text-anchor="middle" class="sub">remote state in S3 · sandbox / QA / prod</text>
+</svg>
+</div>
+      <a class="btn" href="https://github.com/jjchamorroi/juanjose-data-portfolio/blob/main/cases/03-cloud-architecture-iac/README.md" target="_blank" rel="noopener">Read full case →</a>
+    </article>
+    <article class="card" id="case-04">
+      <div class="card-head">
+        <span class="num">04</span>
+        <div><h3>Resilient multi-platform ingestion & ETL</h3><p class="domain">Data engineering</p></div>
+      </div>
+      <p class="summary">A rate-limit-aware ingestion pipeline pulling metrics across three platforms via flaky third-party APIs — surviving them through per-platform concurrency control and capture-and-retry, landing to S3/Athena, and running LLM sentiment + emotion enrichment at scale via slice-based parallelism, with a manifest-vs-Athena quality check.</p>
+      <div class="chips"><span class="chip">Python</span><span class="chip">thread pools</span><span class="chip">AWS Glue</span><span class="chip">S3 parquet</span><span class="chip">Athena</span><span class="chip">LLM (sentiment+emotions)</span><span class="chip">slice parallelism</span></div>
+      <div class="diagram"><svg preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 z" fill="#5b6b7b"/>
+    </marker>
+    <marker id="rarrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 z" fill="#c05364"/>
+    </marker>
+    <style>
+      .lbl{font-size:12.5px;fill:#1f2d3d;} .lblb{font-size:12.5px;font-weight:700;fill:#1f2d3d;}
+      .sub{font-size:10px;fill:#5b6b7b;} .title{font-size:16px;font-weight:700;fill:#1f2d3d;}
+      .phase{font-size:11.5px;font-weight:700;} .flow{stroke:#5b6b7b;stroke-width:1.6;fill:none;marker-end:url(#arrow);}
+      .retry{stroke:#c05364;stroke-width:1.5;fill:none;stroke-dasharray:5 3;marker-end:url(#rarrow);}
+    </style>
+  </defs>
+  <rect width="1000" height="620" fill="#ffffff"/>
+  <text x="30" y="28" class="title">Resilient multi-platform ingestion &amp; enrichment at scale</text>
+  <text x="30" y="48" class="sub">Rate-limit-aware concurrency · capture-and-retry · land to S3/Athena · slice-parallel LLM enrichment · manifest quality check</text>
+
+  <!-- input + secrets -->
+  <rect x="30" y="76" width="150" height="52" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="105" y="97" text-anchor="middle" class="lblb">Roster (Excel)</text>
+  <text x="105" y="114" text-anchor="middle" class="sub">accounts per platform</text>
+  <rect x="30" y="140" width="150" height="48" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="105" y="160" text-anchor="middle" class="lbl">Secrets Manager</text>
+  <text x="105" y="176" text-anchor="middle" class="sub">provider API keys</text>
+
+  <!-- extractors -->
+  <rect x="215" y="66" width="320" height="176" rx="12" fill="#f6fbf7" stroke="#3ba368" stroke-dasharray="6 4"/>
+  <text x="231" y="88" class="phase" fill="#2f8556">PER-PLATFORM EXTRACTORS — tuned concurrency (thread pool)</text>
+  <rect x="235" y="100" width="282" height="36" rx="8" fill="#eafaf1" stroke="#3ba368"/>
+  <text x="245" y="123" class="lbl">Instagram</text><text x="507" y="123" text-anchor="end" class="sub">workers=2 · delay=2s</text>
+  <rect x="235" y="144" width="282" height="36" rx="8" fill="#eafaf1" stroke="#3ba368"/>
+  <text x="245" y="167" class="lbl">TikTok</text><text x="507" y="167" text-anchor="end" class="sub">workers=5 · delay=3s</text>
+  <rect x="235" y="188" width="282" height="36" rx="8" fill="#eafaf1" stroke="#3ba368"/>
+  <text x="245" y="211" class="lbl">X (Twitter)</text><text x="507" y="211" text-anchor="end" class="sub">workers=1 · delay=2s</text>
+  <path class="flow" d="M180,100 L213,112"/>
+  <path class="flow" d="M180,162 L213,170"/>
+  <text x="197" y="235" text-anchor="middle" class="sub">3rd-party REST APIs →</text>
+
+  <!-- failure capture + retry -->
+  <rect x="565" y="80" width="180" height="62" rx="9" fill="#fdeef0" stroke="#c05364"/>
+  <text x="655" y="101" text-anchor="middle" class="lblb">Failure capture</text>
+  <text x="655" y="117" text-anchor="middle" class="sub">"missing" file + error</text>
+  <text x="655" y="132" text-anchor="middle" class="sub">404 / 403 / 429 / timeout</text>
+  <path class="flow" d="M535,120 L563,112"/>
+  <path class="retry" d="M655,142 C655,205 540,208 400,214"/>
+  <text x="545" y="230" text-anchor="middle" class="sub" fill="#c05364">retry only failures (idempotent)</text>
+
+  <!-- quality report -->
+  <rect x="775" y="80" width="195" height="62" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="872" y="101" text-anchor="middle" class="lblb">Quality report</text>
+  <text x="872" y="117" text-anchor="middle" class="sub">success/fail rate per run</text>
+  <text x="872" y="132" text-anchor="middle" class="sub">&gt;90% good · &lt;70% API issue</text>
+  <path class="flow" d="M745,111 L773,111"/>
+
+  <!-- LAND -->
+  <rect x="215" y="300" width="200" height="60" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
+  <text x="315" y="322" text-anchor="middle" class="lblb">Land — S3 parquet</text>
+  <text x="315" y="339" text-anchor="middle" class="sub">registered in Athena</text>
+  <text x="315" y="353" text-anchor="middle" class="sub">(comments extracted via Glue)</text>
+  <path class="flow" d="M375,242 C350,265 330,282 320,298"/>
+
+  <!-- ENRICH -->
+  <rect x="440" y="290" width="230" height="80" rx="12" fill="#efeafd" stroke="#7a5fc0"/>
+  <text x="456" y="311" class="phase" fill="#5f47a8">LLM ENRICHMENT (slice-parallel)</text>
+  <text x="555" y="333" text-anchor="middle" class="lbl">sentiment + emotions</text>
+  <text x="555" y="350" text-anchor="middle" class="sub">split into % slices · N parallel procs</text>
+  <text x="555" y="363" text-anchor="middle" class="sub">emotions normalized in Athena</text>
+  <path class="flow" d="M415,330 L438,330"/>
+
+  <!-- MANIFEST CHECK -->
+  <rect x="695" y="300" width="130" height="60" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="760" y="322" text-anchor="middle" class="lblb">Manifest ✓</text>
+  <text x="760" y="339" text-anchor="middle" class="sub">vs Athena</text>
+  <text x="760" y="353" text-anchor="middle" class="sub">no gaps/dupes</text>
+  <path class="flow" d="M670,330 L693,330"/>
+
+  <!-- PUBLISH -->
+  <rect x="845" y="300" width="125" height="60" rx="9" fill="#e9f6f8" stroke="#3a9bad"/>
+  <text x="907" y="322" text-anchor="middle" class="lblb">Publish</text>
+  <text x="907" y="339" text-anchor="middle" class="sub">CSV + Athena</text>
+  <text x="907" y="353" text-anchor="middle" class="sub">consolidated</text>
+  <path class="flow" d="M825,330 L843,330"/>
+
+  <text x="500" y="440" text-anchor="middle" class="sub" fill="#5b6b7b">Key idea 1: the concurrency profile (workers · delay · timeout) is the rate-limit dial — trade speed for success rate per provider.</text>
+  <text x="500" y="462" text-anchor="middle" class="sub" fill="#5b6b7b">Key idea 2: failures are captured and retried, not dropped; dead accounts (private/suspended/nonexistent) are classified, not retried forever.</text>
+  <text x="500" y="484" text-anchor="middle" class="sub" fill="#5b6b7b">Key idea 3: expensive LLM enrichment scales via independent % slices; a manifest-vs-Athena check proves every record landed.</text>
+</svg>
+</div>
+      <a class="btn" href="https://github.com/jjchamorroi/juanjose-data-portfolio/blob/main/cases/04-multiplatform-ingestion-etl/README.md" target="_blank" rel="noopener">Read full case →</a>
+    </article>
+  </div>
+</section>
+<footer>
+  <div class="wrap">
+    <p><b>Confidentiality.</b> All cases are based on real projects but recreated with generic domains and
+    synthetic data. They contain no real names, production identifiers, credentials or internal information
+    of any organization.</p>
+    <p>Built as static HTML · hosted on GitHub Pages · <a href="https://github.com/jjchamorroi/juanjose-data-portfolio" target="_blank" rel="noopener">source</a></p>
+  </div>
+</footer>
+</body>
+</html>

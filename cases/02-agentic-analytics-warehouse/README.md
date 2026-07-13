@@ -9,7 +9,7 @@
 **One-line summary:** A conversational analytics layer where business users ask questions in natural
 language and a set of **Snowflake Cortex agents** answer them by combining **text-to-SQL over a
 semantic layer**, **semantic (vector) search** over documents, and **custom tool servers (MCP)** —
-exposed through a thin FastAPI orchestration API and a single-page chat UI.
+exposed through a thin FastAPI orchestration API (with conversations persisted per user in PostgreSQL) and a Keycloak-authenticated single-page chat UI.
 
 ---
 
@@ -35,6 +35,8 @@ answer from the warehouse, not from its own priors, and must route each question
   rather than exporting data elsewhere.
 - The frontend is a normal web chat: it should not need to know anything about SQL, embeddings or
   the warehouse.
+- Conversations must **survive restarts** and be scoped per user (not held in process memory).
+- A warehouse call can fail mid-turn; a failure must **never lose the user's message**.
 
 ## 3. Proposed architecture
 
@@ -47,8 +49,11 @@ and a **thin orchestration API + SPA** in front.
 
 1. The **SPA** sends `{ user_message, thread_id }` to a single backend endpoint. There is no separate
    "create thread" / "send message" — the one endpoint decides based on whether a `thread_id` exists.
-2. The **FastAPI** service manages conversation threads (persisting thread metadata) and calls the
-   Snowflake **Cortex Agent REST API** (`:run`), passing the message and thread context.
+2. The **FastAPI** service authenticates the user (identity via **Keycloak**) and manages
+   conversation state in **PostgreSQL** (`threads` / `messages`, async connection pool). It
+   **persists the user message first, then calls** the Snowflake **Cortex Agent REST API** (`:run`)
+   with the thread context — so if the warehouse call fails, the turn is not lost; the SPA detects a
+   user message with no assistant reply and offers a retry.
 3. The **agent** (LLM orchestration model) reads the question and **routes** it to the right tool
    following explicit routing rules:
    - **Cortex Analyst (text-to-SQL)** for quantitative questions → runs SQL against a **Semantic
@@ -81,6 +86,9 @@ and to translate column names into natural language.
 | Multi-domain | **One specialized agent per domain** | A single mega-agent | Each agent has focused routing rules and tools → better routing accuracy and maintainability. |
 | Orchestration API | **FastAPI proxy with thread state** | Frontend calls Cortex directly | Hides credentials, manages threads, filters internal `tool_result` noise, returns a clean typed contract. |
 | API contract | **Single endpoint, typed `parts`** | Many REST endpoints | Minimal surface for the client; the same shape carries text, charts and suggestions. |
+| Conversation state | **PostgreSQL (threads / messages)** | In-memory dict / localStorage | Survives restarts, scoped per user, single source of truth for history. |
+| Turn durability | **Persist-then-call + retry UX** | Atomic transaction around the LLM call | The user message is saved before the (slow, external) warehouse call; a failure never loses the turn. |
+| Identity | **Keycloak (OIDC)** | Ad-hoc email field | Standard SSO; `user_id` scopes every thread/message query. |
 | Frontend | **SPA chat (Vite + SPA framework)** | Server-rendered app | Simple static hosting; the client only knows the one endpoint and the `parts` contract. |
 
 ## 5. Cost & scalability
@@ -108,4 +116,4 @@ re-architecting; adding a data source means extending a Semantic View or a searc
 
 ---
 
-**Stack:** `Snowflake Cortex (Analyst / Search)` · `Semantic Views` · `Dynamic Tables` · `vector embeddings` · `MCP tool servers` · `stored procedures` · `FastAPI` · `REST` · `SPA (Vite)` · `Vega-Lite`
+**Stack:** `Snowflake Cortex (Analyst / Search)` · `Semantic Views` · `Dynamic Tables` · `vector embeddings` · `MCP tool servers` · `stored procedures` · `FastAPI` · `PostgreSQL (asyncpg)` · `Keycloak (OIDC)` · `REST` · `SPA (Vite)` · `Vega-Lite`

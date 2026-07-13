@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 660" font-family="Segoe UI, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 720" font-family="Segoe UI, Arial, sans-serif">
   <defs>
     <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L7,3 L0,6 z" fill="#5b6b7b"/>
@@ -8,88 +8,95 @@
       .sub{font-size:10px;fill:#5b6b7b;} .title{font-size:16px;font-weight:700;fill:#1f2d3d;}
       .phase{font-size:11.5px;font-weight:700;} .flow{stroke:#5b6b7b;stroke-width:1.6;fill:none;marker-end:url(#arrow);}
       .route{stroke:#8a5a00;stroke-width:1.5;fill:none;marker-end:url(#arrow);stroke-dasharray:4 3;}
+      .dash{stroke:#9aa7b4;stroke-width:1.3;fill:none;stroke-dasharray:4 3;marker-end:url(#arrow);}
     </style>
   </defs>
-  <rect width="1000" height="660" fill="#ffffff"/>
-  <text x="30" y="30" class="title">Agentic analytics over the data warehouse (Snowflake Cortex)</text>
-  <text x="30" y="50" class="sub">Natural-language chat → agent routing → text-to-SQL + semantic search + tool servers, all grounded on governed data</text>
+  <rect width="1000" height="720" fill="#ffffff"/>
+  <text x="30" y="28" class="title">Agentic analytics over the data warehouse (Snowflake Cortex)</text>
+  <text x="30" y="48" class="sub">NL chat → agent routing → text-to-SQL + semantic search + tool servers · grounded on governed data · conversations persisted</text>
 
-  <!-- client -->
-  <rect x="30" y="80" width="150" height="60" rx="9" fill="#e9f6f8" stroke="#3a9bad"/>
-  <text x="105" y="105" text-anchor="middle" class="lblb">SPA chat UI</text>
-  <text x="105" y="123" text-anchor="middle" class="sub">Vite · charts + chips</text>
+  <!-- client + orchestration tier -->
+  <rect x="30" y="66" width="150" height="56" rx="9" fill="#e9f6f8" stroke="#3a9bad"/>
+  <text x="105" y="89" text-anchor="middle" class="lblb">SPA chat UI</text>
+  <text x="105" y="106" text-anchor="middle" class="sub">Vite · charts + chips</text>
 
-  <!-- FastAPI -->
-  <rect x="210" y="80" width="180" height="60" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
-  <text x="300" y="102" text-anchor="middle" class="lblb">FastAPI orchestration</text>
-  <text x="300" y="119" text-anchor="middle" class="sub">1 endpoint · thread state</text>
-  <text x="300" y="133" text-anchor="middle" class="sub">typed `parts` contract</text>
-  <path class="flow" d="M180,104 L208,104"/>
-  <path class="flow" d="M208,120 L182,120"/>
-  <text x="195" y="150" text-anchor="middle" class="sub" fill="#3a9bad">text · chart · suggestions</text>
+  <rect x="210" y="66" width="185" height="56" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="302" y="86" text-anchor="middle" class="lblb">FastAPI orchestration</text>
+  <text x="302" y="102" text-anchor="middle" class="sub">1 endpoint · typed `parts`</text>
+  <text x="302" y="115" text-anchor="middle" class="sub">persist-then-call · retry UX</text>
 
-  <!-- Agent -->
-  <rect x="420" y="80" width="200" height="60" rx="9" fill="#efeafd" stroke="#7a5fc0"/>
-  <text x="520" y="102" text-anchor="middle" class="lblb">Cortex Agent (LLM)</text>
-  <text x="520" y="119" text-anchor="middle" class="sub">orchestration + routing rules</text>
-  <text x="520" y="133" text-anchor="middle" class="sub">cites sources · hides SQL</text>
-  <path class="flow" d="M390,110 L418,110"/>
-  <text x="405" y="100" text-anchor="middle" class="sub">:run</text>
+  <rect x="425" y="66" width="200" height="56" rx="9" fill="#efeafd" stroke="#7a5fc0"/>
+  <text x="525" y="86" text-anchor="middle" class="lblb">Cortex Agent (LLM)</text>
+  <text x="525" y="102" text-anchor="middle" class="sub">routing rules · cites sources</text>
+  <text x="525" y="115" text-anchor="middle" class="sub">hides SQL/schema</text>
+
+  <path class="flow" d="M180,88 L208,88"/><path class="flow" d="M208,104 L182,104"/>
+  <path class="flow" d="M395,92 L423,92"/>
+  <text x="410" y="84" text-anchor="middle" class="sub">:run</text>
+
+  <!-- identity + persistence -->
+  <rect x="650" y="60" width="150" height="52" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="725" y="81" text-anchor="middle" class="lbl">Keycloak (OIDC)</text>
+  <text x="725" y="97" text-anchor="middle" class="sub">SPA auth · user scope</text>
+  <rect x="820" y="60" width="150" height="52" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
+  <text x="895" y="81" text-anchor="middle" class="lbl">PostgreSQL</text>
+  <text x="895" y="97" text-anchor="middle" class="sub">threads + messages</text>
+  <path class="dash" d="M180,74 C420,36 560,50 648,74"/>
+  <path class="flow" d="M395,80 C520,44 720,52 818,74"/>
+  <text x="470" y="44" text-anchor="middle" class="sub" fill="#5b6b7b">authenticate · persist user message first</text>
 
   <!-- Snowflake box -->
-  <rect x="30" y="185" width="940" height="440" rx="12" fill="#f7f9fc" stroke="#b8c2cc" stroke-dasharray="6 4"/>
-  <text x="46" y="208" class="phase" fill="#5b6b7b">SNOWFLAKE — governed data + AI (no data leaves the warehouse)</text>
+  <rect x="30" y="190" width="940" height="470" rx="12" fill="#f7f9fc" stroke="#b8c2cc" stroke-dasharray="6 4"/>
+  <text x="46" y="213" class="phase" fill="#5b6b7b">SNOWFLAKE — governed data + AI (no data leaves the warehouse)</text>
 
   <!-- 4 tools -->
-  <rect x="60" y="230" width="200" height="56" rx="9" fill="#fff4e6" stroke="#d59433"/>
-  <text x="160" y="252" text-anchor="middle" class="lblb">Cortex Analyst</text>
-  <text x="160" y="269" text-anchor="middle" class="sub">text-to-SQL (quantitative)</text>
-  <rect x="285" y="230" width="200" height="56" rx="9" fill="#fff4e6" stroke="#d59433"/>
-  <text x="385" y="252" text-anchor="middle" class="lblb">Cortex Search</text>
-  <text x="385" y="269" text-anchor="middle" class="sub">semantic / vector search</text>
-  <rect x="510" y="230" width="200" height="56" rx="9" fill="#fff4e6" stroke="#d59433"/>
-  <text x="610" y="252" text-anchor="middle" class="lblb">MCP tool servers</text>
-  <text x="610" y="269" text-anchor="middle" class="sub">relationships · entity detail</text>
-  <rect x="735" y="230" width="205" height="56" rx="9" fill="#fdeef0" stroke="#c05364"/>
-  <text x="837" y="252" text-anchor="middle" class="lblb">Action: stored proc</text>
-  <text x="837" y="269" text-anchor="middle" class="sub">email report (on request)</text>
+  <rect x="60" y="234" width="200" height="54" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="160" y="256" text-anchor="middle" class="lblb">Cortex Analyst</text>
+  <text x="160" y="273" text-anchor="middle" class="sub">text-to-SQL (quantitative)</text>
+  <rect x="285" y="234" width="200" height="54" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="385" y="256" text-anchor="middle" class="lblb">Cortex Search</text>
+  <text x="385" y="273" text-anchor="middle" class="sub">semantic / vector search</text>
+  <rect x="510" y="234" width="200" height="54" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="610" y="256" text-anchor="middle" class="lblb">MCP tool servers</text>
+  <text x="610" y="273" text-anchor="middle" class="sub">relationships · entity detail</text>
+  <rect x="735" y="234" width="205" height="54" rx="9" fill="#fdeef0" stroke="#c05364"/>
+  <text x="837" y="256" text-anchor="middle" class="lblb">Action: stored proc</text>
+  <text x="837" y="273" text-anchor="middle" class="sub">email report (on request)</text>
 
-  <path class="route" d="M470,140 C360,175 250,200 175,228"/>
-  <path class="route" d="M500,142 C450,180 410,205 388,228"/>
-  <path class="route" d="M545,142 C580,180 600,205 612,228"/>
-  <path class="route" d="M575,138 C720,175 800,205 835,228"/>
+  <path class="route" d="M480,124 C360,175 250,205 175,232"/>
+  <path class="route" d="M510,124 C450,180 410,208 388,232"/>
+  <path class="route" d="M560,124 C590,180 605,208 612,232"/>
+  <path class="route" d="M590,122 C720,175 800,205 835,232"/>
   <text x="300" y="205" text-anchor="middle" class="sub" fill="#8a5a00">routing rules by question type</text>
 
   <!-- semantic layer -->
-  <rect x="60" y="330" width="425" height="60" rx="9" fill="#eafaf1" stroke="#3ba368"/>
+  <rect x="60" y="330" width="425" height="58" rx="9" fill="#eafaf1" stroke="#3ba368"/>
   <text x="272" y="353" text-anchor="middle" class="lblb">Semantic layer — Semantic Views</text>
   <text x="272" y="371" text-anchor="middle" class="sub">friendly names + vetted calculations · governance boundary (no raw columns)</text>
-  <path class="flow" d="M160,286 L200,328"/>
-
-  <rect x="510" y="330" width="200" height="60" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
+  <path class="flow" d="M160,288 L200,328"/>
+  <rect x="510" y="330" width="200" height="58" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
   <text x="610" y="353" text-anchor="middle" class="lblb">Embeddings index</text>
   <text x="610" y="371" text-anchor="middle" class="sub">from documents / transcripts</text>
-  <path class="flow" d="M385,286 L520,328"/>
+  <path class="flow" d="M385,288 L520,328"/>
 
   <!-- base data -->
-  <rect x="60" y="440" width="200" height="56" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <rect x="60" y="440" width="200" height="54" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
   <text x="160" y="462" text-anchor="middle" class="lbl">Base tables</text>
-  <text x="160" y="479" text-anchor="middle" class="sub">governed source data</text>
-  <rect x="285" y="440" width="200" height="56" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="160" y="478" text-anchor="middle" class="sub">governed source data</text>
+  <rect x="285" y="440" width="200" height="54" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
   <text x="385" y="462" text-anchor="middle" class="lbl">Dynamic Tables</text>
-  <text x="385" y="479" text-anchor="middle" class="sub">incremental refresh</text>
-  <rect x="510" y="440" width="200" height="56" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="385" y="478" text-anchor="middle" class="sub">incremental refresh</text>
+  <rect x="510" y="440" width="200" height="54" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
   <text x="610" y="462" text-anchor="middle" class="lbl">Documents (PDF/text)</text>
-  <text x="610" y="479" text-anchor="middle" class="sub">source for embeddings</text>
-  <path class="flow" d="M200,390 L180,438"/>
-  <path class="flow" d="M330,390 L360,438"/>
-  <path class="flow" d="M610,390 L610,438"/>
-
-  <!-- warehouse compute -->
-  <rect x="735" y="440" width="205" height="56" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="610" y="478" text-anchor="middle" class="sub">source for embeddings</text>
+  <rect x="735" y="440" width="205" height="54" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
   <text x="837" y="462" text-anchor="middle" class="lbl">Virtual warehouse</text>
-  <text x="837" y="479" text-anchor="middle" class="sub">shared compute · query timeouts</text>
+  <text x="837" y="478" text-anchor="middle" class="sub">shared compute · query timeouts</text>
+  <path class="flow" d="M200,388 L180,438"/>
+  <path class="flow" d="M330,388 L360,438"/>
+  <path class="flow" d="M610,388 L610,438"/>
 
-  <text x="500" y="555" text-anchor="middle" class="sub" fill="#5b6b7b">Grounding: quantitative answers resolve through the Semantic View; "find/where" answers resolve through the embeddings index; both are citable.</text>
-  <text x="500" y="590" text-anchor="middle" class="sub" fill="#5b6b7b">Cross-reference keys let the agent join content (from search) with engagement/metrics (from SQL) in a single answer.</text>
+  <text x="500" y="560" text-anchor="middle" class="sub" fill="#5b6b7b">Grounding: quantitative answers resolve through the Semantic View; "find/where" answers resolve through the embeddings index; both are citable.</text>
+  <text x="500" y="588" text-anchor="middle" class="sub" fill="#5b6b7b">Cross-reference keys let the agent join content (from search) with metrics (from SQL) in a single answer.</text>
+  <text x="500" y="628" text-anchor="middle" class="sub" fill="#5b6b7b">Response parts (text · Vega-Lite chart · suggested queries) are normalized by FastAPI and rendered by the SPA.</text>
 </svg>

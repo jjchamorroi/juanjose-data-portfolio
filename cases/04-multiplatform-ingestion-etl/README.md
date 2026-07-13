@@ -55,9 +55,15 @@ capture → automatic retry → quality report → enrichment → publish**.
    retried forever.
 6. **Quality report**: each run emits a **success/failure-rate report** (e.g. "85% success, 15%
    failed") with a simple rating (>90% excellent, <70% API problems) so a run's completeness is visible.
-7. **Enrichment**: comments are enriched with **LLM sentiment**; per-platform outputs are consolidated.
-8. **Publish**: clean, timestamped CSVs (and a consolidated dataset) ready for querying/analysis; a
-   parallel runner processes several enrichment streams at once for throughput.
+7. **Land**: extracted comments are written to **S3 as parquet** and registered in **Athena**, so
+   downstream steps query them with SQL at scale.
+8. **Enrichment at scale**: an LLM enriches comments with **sentiment and emotions**. The workload is
+   split into **percentage slices** and run as **parallel processes**, so large comment volumes are
+   processed within the LLM's rate limits; emotion labels are then **normalized in Athena**.
+9. **Completeness check**: a **manifest-vs-Athena** verification confirms every extracted comment
+   actually landed in the table — catching gaps and duplicates and making reruns idempotent.
+10. **Publish**: clean, timestamped datasets (CSV + Athena) ready for querying/analysis; per-platform
+   outputs are consolidated.
 
 **On resilience:** the concurrency profile is *the* rate-limit control — turning `max_workers` down
 and `delay` up is how the pipeline trades speed for a higher success rate when a provider gets
@@ -75,6 +81,9 @@ instead of restarted.
 | Credentials | **AWS Secrets Manager** | Keys in code / env files | Secrets never committed; rotated centrally. |
 | Structure | **One extractor per platform, shared core** | One monolithic script | New platform = new extractor reusing the retry/report core. |
 | Enrichment | **LLM sentiment as a separate stage** | Inline with extraction | Decouples slow/limited LLM calls from extraction; can run in parallel streams. |
+| Enrichment scale | **Slice-based parallelism (% partitions)** | One big sequential pass | Moves through large comment volumes within LLM rate limits; each slice is an independent, restartable unit. |
+| Landing / query | **S3 parquet + Athena** | Only local CSV | Columnar and queryable at scale; CSV kept for hand-off. |
+| Completeness | **Manifest-vs-Athena verification** | Trust the writes | Confirms every extracted record landed (no gaps/dupes); makes reruns idempotent. |
 | Output | **Timestamped CSV + consolidated dataset** | Overwrite in place | Auditable history; downstream tools read a stable, clean schema. |
 
 ## 5. Cost & scalability
@@ -90,7 +99,8 @@ create runaway cost.
 - Complete, trustworthy datasets out of flaky APIs, with a **known** completeness per run.
 - `429` rate-limit failures controlled by tuning concurrency instead of rewriting code.
 - Failures triaged automatically (retry the transient, classify the dead).
-- Comments delivered analysis-ready with sentiment attached.
+- Comments delivered analysis-ready with **sentiment and emotions**, landed in S3/Athena.
+- Completeness verified per run (manifest vs Athena), so gaps and duplicates are caught, not shipped.
 
 ## 7. Possible improvements
 
@@ -102,4 +112,4 @@ create runaway cost.
 
 ---
 
-**Stack:** `Python` · `concurrent.futures (thread pools)` · `REST APIs` · `AWS Secrets Manager` · `pandas` · `LLM (sentiment)` · `CSV / Athena` · `retry & rate-limit control`
+**Stack:** `Python` · `concurrent.futures (thread pools)` · `REST APIs` · `AWS Secrets Manager` · `AWS Glue` · `S3 (parquet)` · `Athena` · `pandas` · `LLM (sentiment + emotions)` · `slice-based parallelism` · `retry & rate-limit control`
