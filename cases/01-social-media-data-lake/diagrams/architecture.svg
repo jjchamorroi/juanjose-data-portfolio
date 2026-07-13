@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 620" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 z" fill="#5b6b7b"/>
+    </marker>
+    <style>
+      .box{rx:10;ry:10;stroke-width:1.5;}
+      .lbl{font-size:13px;fill:#1f2d3d;}
+      .sub{font-size:11px;fill:#5b6b7b;}
+      .title{font-size:15px;font-weight:700;fill:#1f2d3d;}
+      .phase{font-size:12px;font-weight:700;fill:#8a5a00;}
+      .flow{stroke:#5b6b7b;stroke-width:1.6;fill:none;marker-end:url(#arrow);}
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="620" fill="#ffffff"/>
+  <text x="30" y="34" class="title">Social media data lake — serverless medallion on AWS</text>
+
+  <rect x="30" y="60" width="170" height="56" class="box" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="115" y="84" text-anchor="middle" class="lbl">EventBridge</text>
+  <text x="115" y="102" text-anchor="middle" class="sub">daily cron (early morning)</text>
+
+  <rect x="240" y="60" width="200" height="56" class="box" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="340" y="84" text-anchor="middle" class="lbl">Step Functions</text>
+  <text x="340" y="102" text-anchor="middle" class="sub">pipeline orchestration</text>
+  <path class="flow" d="M200,88 L238,88"/>
+
+  <rect x="30" y="150" width="620" height="250" fill="#fbf7ee" stroke="#e0c07a" stroke-dasharray="5 4" rx="12"/>
+  <text x="46" y="172" class="phase">PHASE 1 · parallel — 6 AWS Glue jobs → RAW (S3, JSONL append-only)</text>
+
+  <g>
+    <rect x="46" y="188" width="130" height="46" class="box" fill="#eafaf1" stroke="#3ba368"/>
+    <text x="111" y="216" text-anchor="middle" class="lbl">Facebook</text>
+    <rect x="186" y="188" width="130" height="46" class="box" fill="#eafaf1" stroke="#3ba368"/>
+    <text x="251" y="216" text-anchor="middle" class="lbl">Instagram</text>
+    <rect x="326" y="188" width="130" height="46" class="box" fill="#eafaf1" stroke="#3ba368"/>
+    <text x="391" y="216" text-anchor="middle" class="lbl">TikTok</text>
+    <rect x="466" y="188" width="130" height="46" class="box" fill="#eafaf1" stroke="#3ba368"/>
+    <text x="531" y="216" text-anchor="middle" class="lbl">X (Twitter)</text>
+    <rect x="46" y="246" width="130" height="46" class="box" fill="#eafaf1" stroke="#3ba368"/>
+    <text x="111" y="274" text-anchor="middle" class="lbl">YouTube</text>
+    <rect x="186" y="246" width="270" height="46" class="box" fill="#eafaf1" stroke="#3ba368"/>
+    <text x="321" y="274" text-anchor="middle" class="lbl">Comment extraction</text>
+  </g>
+
+  <rect x="46" y="320" width="270" height="60" class="box" fill="#f3f0fa" stroke="#8267c4"/>
+  <text x="181" y="344" text-anchor="middle" class="lbl">RAW layer (S3)</text>
+  <text x="181" y="363" text-anchor="middle" class="sub">raw JSONL · history · append-only</text>
+
+  <rect x="340" y="320" width="290" height="60" class="box" fill="#f3f0fa" stroke="#8267c4"/>
+  <text x="485" y="340" text-anchor="middle" class="lbl">CURATED layer — Apache Iceberg</text>
+  <text x="485" y="359" text-anchor="middle" class="sub">auto-aligned schema · versioned · MERGE</text>
+  <path class="flow" d="M316,350 L338,350"/>
+
+  <rect x="690" y="150" width="240" height="250" fill="#fdeef0" stroke="#d47a86" stroke-dasharray="5 4" rx="12"/>
+  <text x="706" y="172" class="phase" fill="#a23a4a">PHASE 2 · sequential</text>
+  <rect x="710" y="250" width="200" height="70" class="box" fill="#fbe3e7" stroke="#c05364"/>
+  <text x="810" y="278" text-anchor="middle" class="lbl">Sentiment analysis</text>
+  <text x="810" y="298" text-anchor="middle" class="sub">LLM · runs after Phase 1</text>
+  <path class="flow" d="M650,290 C672,290 676,285 708,285"/>
+
+  <rect x="340" y="440" width="290" height="56" class="box" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="485" y="464" text-anchor="middle" class="lbl">Glue Data Catalog</text>
+  <text x="485" y="482" text-anchor="middle" class="sub">Iceberg table registry</text>
+  <path class="flow" d="M485,380 L485,438"/>
+
+  <rect x="340" y="524" width="290" height="60" class="box" fill="#e9f6f8" stroke="#3a9bad"/>
+  <text x="485" y="548" text-anchor="middle" class="lbl">Amazon Athena — SQL</text>
+  <text x="485" y="567" text-anchor="middle" class="sub">queries CURATED only · BI / dashboards</text>
+  <path class="flow" d="M485,496 L485,522"/>
+
+  <rect x="690" y="440" width="240" height="144" fill="#f6f8fa" stroke="#b8c2cc" rx="12"/>
+  <text x="810" y="466" text-anchor="middle" class="phase" fill="#5b6b7b">Infrastructure</text>
+  <text x="810" y="492" text-anchor="middle" class="sub">Terraform (IaC)</text>
+  <text x="810" y="512" text-anchor="middle" class="sub">modules: glue · iam · s3</text>
+  <text x="810" y="530" text-anchor="middle" class="sub">eventbridge + stepfunction</text>
+  <text x="810" y="556" text-anchor="middle" class="sub">environments: sandbox / QA / prod</text>
+</svg>

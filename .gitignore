@@ -1,0 +1,23 @@
+# Entornos y dependencias
+.venv/
+.env/
+venv/
+node_modules/
+__pycache__/
+*.pyc
+
+# Secretos y credenciales (nunca subir)
+.env
+*.env
+*.pem
+*.key
+credentials*
+secrets*
+*.tfvars
+.terraform/
+
+# Sistema
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
