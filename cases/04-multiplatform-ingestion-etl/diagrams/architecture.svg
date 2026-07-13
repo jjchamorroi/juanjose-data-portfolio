@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 z" fill="#5b6b7b"/>
+    </marker>
+    <marker id="rarrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 z" fill="#c05364"/>
+    </marker>
+    <style>
+      .lbl{font-size:12.5px;fill:#1f2d3d;} .lblb{font-size:12.5px;font-weight:700;fill:#1f2d3d;}
+      .sub{font-size:10px;fill:#5b6b7b;} .title{font-size:16px;font-weight:700;fill:#1f2d3d;}
+      .phase{font-size:11.5px;font-weight:700;} .flow{stroke:#5b6b7b;stroke-width:1.6;fill:none;marker-end:url(#arrow);}
+      .retry{stroke:#c05364;stroke-width:1.5;fill:none;stroke-dasharray:5 3;marker-end:url(#rarrow);}
+    </style>
+  </defs>
+  <rect width="1000" height="600" fill="#ffffff"/>
+  <text x="30" y="30" class="title">Resilient multi-platform metrics ingestion &amp; enrichment</text>
+  <text x="30" y="50" class="sub">Rate-limit-aware concurrency · capture-and-retry failures · per-run quality report · sentiment enrichment</text>
+
+  <!-- input + secrets -->
+  <rect x="30" y="80" width="150" height="56" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="105" y="102" text-anchor="middle" class="lblb">Roster (Excel)</text>
+  <text x="105" y="119" text-anchor="middle" class="sub">accounts per platform</text>
+  <rect x="30" y="150" width="150" height="50" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="105" y="171" text-anchor="middle" class="lbl">Secrets Manager</text>
+  <text x="105" y="187" text-anchor="middle" class="sub">provider API keys</text>
+
+  <!-- extractors -->
+  <rect x="220" y="70" width="330" height="180" rx="12" fill="#f6fbf7" stroke="#3ba368" stroke-dasharray="6 4"/>
+  <text x="236" y="92" class="phase" fill="#2f8556">PER-PLATFORM EXTRACTORS — tuned concurrency (thread pool)</text>
+  <rect x="240" y="104" width="290" height="38" rx="8" fill="#eafaf1" stroke="#3ba368"/>
+  <text x="250" y="128" class="lbl">Instagram</text><text x="520" y="128" text-anchor="end" class="sub">workers=2 · delay=2s</text>
+  <rect x="240" y="150" width="290" height="38" rx="8" fill="#eafaf1" stroke="#3ba368"/>
+  <text x="250" y="174" class="lbl">TikTok</text><text x="520" y="174" text-anchor="end" class="sub">workers=5 · delay=3s</text>
+  <rect x="240" y="196" width="290" height="38" rx="8" fill="#eafaf1" stroke="#3ba368"/>
+  <text x="250" y="220" class="lbl">X (Twitter)</text><text x="520" y="220" text-anchor="end" class="sub">workers=1 · delay=2s</text>
+  <path class="flow" d="M180,108 L218,120"/>
+  <path class="flow" d="M180,172 L218,180"/>
+  <text x="200" y="240" text-anchor="middle" class="sub">3rd-party REST APIs →</text>
+
+  <!-- failure capture + retry -->
+  <rect x="590" y="90" width="180" height="66" rx="9" fill="#fdeef0" stroke="#c05364"/>
+  <text x="680" y="112" text-anchor="middle" class="lblb">Failure capture</text>
+  <text x="680" y="129" text-anchor="middle" class="sub">"missing" file + error</text>
+  <text x="680" y="144" text-anchor="middle" class="sub">404 / 403 / 429 / timeout</text>
+  <path class="flow" d="M550,140 L588,125"/>
+  <path class="retry" d="M680,156 C680,215 560,215 400,214"/>
+  <text x="560" y="235" text-anchor="middle" class="sub" fill="#c05364">retry only failures (idempotent)</text>
+
+  <!-- quality report -->
+  <rect x="590" y="185" width="180" height="60" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="680" y="207" text-anchor="middle" class="lblb">Quality report</text>
+  <text x="680" y="224" text-anchor="middle" class="sub">success/fail rate per run</text>
+  <text x="680" y="238" text-anchor="middle" class="sub">&gt;90% good · &lt;70% API issue</text>
+  <path class="flow" d="M680,156 L680,183"/>
+
+  <!-- enrichment -->
+  <rect x="220" y="300" width="330" height="90" rx="12" fill="#efeafd" stroke="#7a5fc0"/>
+  <text x="236" y="322" class="phase" fill="#5f47a8">ENRICHMENT (parallel streams)</text>
+  <rect x="240" y="332" width="290" height="46" rx="8" fill="#f3f0fa" stroke="#8267c4"/>
+  <text x="385" y="354" text-anchor="middle" class="lbl">LLM sentiment on comments</text>
+  <text x="385" y="370" text-anchor="middle" class="sub">decoupled from extraction · runs in parallel</text>
+  <path class="flow" d="M385,250 L385,298"/>
+
+  <!-- consolidate + publish -->
+  <rect x="590" y="300" width="180" height="60" rx="9" fill="#eafaf1" stroke="#3ba368"/>
+  <text x="680" y="322" text-anchor="middle" class="lblb">Consolidate</text>
+  <text x="680" y="339" text-anchor="middle" class="sub">merge platforms</text>
+  <text x="680" y="353" text-anchor="middle" class="sub">clean schema</text>
+  <path class="flow" d="M550,350 L588,340"/>
+
+  <rect x="810" y="300" width="160" height="60" rx="9" fill="#e9f6f8" stroke="#3a9bad"/>
+  <text x="890" y="322" text-anchor="middle" class="lblb">Publish</text>
+  <text x="890" y="339" text-anchor="middle" class="sub">timestamped CSV</text>
+  <text x="890" y="353" text-anchor="middle" class="sub">→ Athena / analysis</text>
+  <path class="flow" d="M770,330 L808,330"/>
+
+  <text x="500" y="440" text-anchor="middle" class="sub" fill="#5b6b7b">Key idea: the concurrency profile (workers · delay · timeout) is the rate-limit dial — trade speed for success rate per provider.</text>
+  <text x="500" y="462" text-anchor="middle" class="sub" fill="#5b6b7b">Failures are captured and retried, not dropped; dead accounts (private/suspended/nonexistent) are classified, not retried forever.</text>
+</svg>

@@ -15,9 +15,9 @@ technical choice.
 | # | Case | Domain | Main stack |
 |---|------|--------|------------|
 | 01 | [Social media analytics data lake](cases/01-social-media-data-lake/) | Data architecture · medallion | S3 · Apache Iceberg · Glue · Athena · Step Functions · Terraform |
-| 02 | Agentic analytics over the data warehouse *(WIP)* | AI over data · text-to-SQL + semantic search | Snowflake Cortex (Analyst / Search) · semantic layer · Vue 3 |
-| 03 | Cloud architecture & IaC at scale *(WIP)* | Cloud / end-to-end platform | ECS Fargate · ALB · RDS · CloudFront · Terraform |
-| 04 | Multi-platform ingestion / ETL *(WIP)* | Data engineering | Python · APIs · retries · data quality · AWS |
+| 02 | [Agentic analytics over the data warehouse](cases/02-agentic-analytics-warehouse/) | AI over data · text-to-SQL + semantic search | Snowflake Cortex (Analyst / Search) · semantic layer · MCP · FastAPI · SPA |
+| 03 | [Cloud architecture & IaC for web apps at scale](cases/03-cloud-architecture-iac/) | Cloud / end-to-end platform | ECS Fargate · ALB · RDS · CloudFront · Terraform · Keycloak |
+| 04 | [Resilient multi-platform ingestion & ETL](cases/04-multiplatform-ingestion-etl/) | Data engineering | Python · REST APIs · retries · data quality · AWS |
 
 ---
 
