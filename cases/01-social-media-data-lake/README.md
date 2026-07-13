@@ -46,12 +46,20 @@ triggered by EventBridge.
 3. Each job transforms its RAW data and loads the **CURATED** layer as an **Apache Iceberg** table on S3, registered in the Glue Catalog.
 4. **Phase 2 — sequential:** once the six finish, a **sentiment analysis** job runs over the comments using an LLM. It runs afterward and in series on purpose (see decisions below).
 5. **Athena** queries only the CURATED layer (Iceberg) via standard SQL; BI/dashboards read from there.
+6. **Failure notifications:** every state in the state machine has a `Catch (States.ALL)` that, on error, routes to a notify step which **publishes a formatted alert to an SNS topic** — so a failed branch pages the team instead of silently producing a stale table.
 
 **On the CURATED layer (Iceberg):** the table schema is **automatically aligned** to what arrives
 from RAW on each run — new columns are added (`ADD COLUMN`) and columns that stopped arriving are
 removed (`DROP COLUMN`), with safeguards (partition columns are never touched, and a mass drop of
 >50% of columns is blocked). This keeps the table current and free of stale columns, with no manual
 intervention.
+
+**On failure notifications (fail loud, not silent):** each Glue-job state in the Step Function is
+wrapped with a `Catch` that jumps to a dedicated notify state and **publishes to an SNS topic** with
+full context (execution id, state name, timestamp, job name, error type and cause). Because the catch
+is per branch, a failure in one platform is reported precisely — and the parallel arm can be
+retried per branch rather than rerunning the whole pipeline. The team learns about a broken run the
+moment it happens, not the next morning.
 
 ## 4. Technology choices & rationale
 
@@ -64,6 +72,7 @@ intervention.
 | Orchestration | **Step Functions + EventBridge** | Self-managed Airflow | No need for an always-on Airflow for a daily batch; serverless + declarative parallel/sequential flow with native failure handling. |
 | RAW & CURATED layers | **Two separate jobs** | Single RAW→CURATED job | Reprocess CURATED without hitting the APIs again, and isolate transformation failures from ingestion. |
 | Sentiment | **Sequential LLM job** | Parallel with the rest | Depends on comments already being extracted, respects the LLM rate limit, and saves cost: if extraction fails, it doesn't run. |
+| Failure alerting | **Step Functions `Catch` → SNS publish** | Silent failures / manual checks | Each branch notifies on failure with full context; the pipeline fails loud, and failures are retried per branch. |
 | Infrastructure | **Terraform** (modules) | AWS console by hand | Versioned IaC, reproducible per environment (sandbox/QA/prod), with reusable modules (glue, iam, s3, eventbridge+stepfunction). |
 
 ## 5. Cost & scalability
@@ -80,6 +89,7 @@ but the third-party API rate limits, mitigated with retries and by running the L
 - The schema self-adjusts to API changes: no more silent pipeline breaks.
 - Safe reprocessing thanks to the RAW/CURATED split and Iceberg versioning.
 - Infrastructure reproducible per environment with a single `terraform apply`.
+- Failures are alerted in real time via SNS (which job, why, when), so problems surface immediately.
 
 ## 7. Possible improvements
 
@@ -90,4 +100,4 @@ but the third-party API rate limits, mitigated with retries and by running the L
 
 ---
 
-**Stack:** `AWS S3` · `Apache Iceberg` · `AWS Glue` · `Athena` · `Glue Catalog` · `Step Functions` · `EventBridge` · `Terraform` · `Python` · `LLM (sentiment analysis)`
+**Stack:** `AWS S3` · `Apache Iceberg` · `AWS Glue` · `Athena` · `Glue Catalog` · `Step Functions` · `EventBridge` · `SNS (failure alerts)` · `Terraform` · `Python` · `LLM (sentiment analysis)`
