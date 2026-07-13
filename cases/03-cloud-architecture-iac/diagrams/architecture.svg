@@ -44,7 +44,7 @@
 
   <!-- VPC container -->
   <rect x="360" y="220" width="610" height="300" rx="12" fill="#f7f9fc" stroke="#b8c2cc" stroke-dasharray="6 4"/>
-  <text x="376" y="243" class="phase" fill="#5b6b7b">VPC — private subnets (no public IPs)</text>
+  <text x="376" y="243" class="phase" fill="#5b6b7b">VPC — private subnets (no public IPs) · persistence = the one swappable module (RDS ↔ DocumentDB)</text>
 
   <!-- ECS services -->
   <rect x="390" y="260" width="200" height="60" rx="9" fill="#eafaf1" stroke="#3ba368"/>
@@ -59,10 +59,10 @@
   <!-- data stores -->
   <rect x="640" y="260" width="150" height="56" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
   <text x="715" y="282" text-anchor="middle" class="lbl">RDS PostgreSQL</text>
-  <text x="715" y="299" text-anchor="middle" class="sub">private · SG ingress 5432</text>
+  <text x="715" y="299" text-anchor="middle" class="sub">App A · transactional (ACID)</text>
   <rect x="810" y="260" width="140" height="56" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
   <text x="880" y="282" text-anchor="middle" class="lbl">DocumentDB</text>
-  <text x="880" y="299" text-anchor="middle" class="sub">optional</text>
+  <text x="880" y="299" text-anchor="middle" class="sub">App B · event scale</text>
   <path class="flow" d="M590,288 L638,288"/>
   <path class="dash" d="M590,278 C700,255 780,258 808,282"/>
 
