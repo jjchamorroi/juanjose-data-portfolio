@@ -7,8 +7,9 @@
 
 **One-line summary:** A serverless AWS data lake that ingests metrics from five social platforms
 (Facebook, Instagram, TikTok, X and YouTube), organizes them in a *medallion* architecture with
-Apache Iceberg, and exposes them for SQL querying in Athena — with automated daily orchestration and
-an LLM-based sentiment analysis stage.
+Apache Iceberg, and exposes them for SQL querying in Athena — with automated daily orchestration, per-branch failure
+alerts, an LLM sentiment stage, and **event-driven continuous load into Snowflake** (Snowpipe →
+Stream → Task) that feeds the warehouse behind Case 02.
 
 ---
 
@@ -61,6 +62,62 @@ is per branch, a failure in one platform is reported precisely — and the paral
 retried per branch rather than rerunning the whole pipeline. The team learns about a broken run the
 moment it happens, not the next morning.
 
+**Continuous load into Snowflake (event-driven — the bridge to the warehouse):** the lake doesn't
+stop at Athena. When a Glue job writes a new CURATED parquet file to S3, an **S3 event notification**
+drops a message on an **SQS** queue that a Snowflake **Snowpipe** listens to (`AUTO_INGEST = TRUE`),
+so the file is `COPY`-ed into a **landing table** within minutes — no polling, no scheduled job. A
+**Stream** on the landing table captures the new rows (CDC), and a **Task** that fires only
+`WHEN SYSTEM$STREAM_HAS_DATA(...)` runs an **idempotent `MERGE`** into the curated Snowflake table
+(upsert on the business key, plus flattening of nested JSON columns). A nightly cleanup Task truncates
+the landing table and resets the Stream, and **RBAC** grants read access to governance and
+data-catalog roles. This is what continuously feeds the warehouse that the agentic layer in
+**[Case 02](../02-agentic-analytics-warehouse/)** queries.
+
+![Snowflake ingestion](diagrams/snowflake-ingest.svg)
+
+Representative (anonymized) shape of the Snowflake side — the same pattern for every platform:
+
+```sql
+-- Secure access to the CURATED bucket via a storage integration (no long-lived keys)
+CREATE STAGE stg_metrics_page_facebook
+  STORAGE_INTEGRATION = int_curated
+  URL = 's3://<curated-bucket>/facebook/metrics_page_insights/'
+  FILE_FORMAT = my_parquet_format;
+
+-- Snowpipe: S3 event -> SQS -> auto COPY into a landing table
+CREATE PIPE pipe_metrics_page_facebook
+  AUTO_INGEST = TRUE AS
+  COPY INTO tmp_metrics_page_facebook
+  FROM @stg_metrics_page_facebook
+  FILE_FORMAT = (FORMAT_NAME = 'my_parquet_format')
+  MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE;
+
+-- CDC on the landing table
+CREATE STREAM stream_metrics_page_facebook ON TABLE tmp_metrics_page_facebook;
+
+-- Fires only when new rows arrived; idempotent upsert + JSON flattening
+CREATE TASK task_load_metrics_page_facebook
+  WAREHOUSE = wh_social
+  WHEN SYSTEM$STREAM_HAS_DATA('stream_metrics_page_facebook') AS
+  MERGE INTO tbl_metrics_page_facebook t
+  USING (
+    SELECT *, PARSE_JSON(page_fan_adds_by_paid_non_paid_unique):total::BIGINT AS fan_adds_total
+    FROM stream_metrics_page_facebook
+  ) s
+  ON t.page_id = s.page_id AND t.metric_date = s.metric_date
+  WHEN MATCHED THEN UPDATE SET ...        -- refresh the day's metrics
+  WHEN NOT MATCHED THEN INSERT ...;       -- add new (page, date) rows
+
+-- Nightly: reset the landing table + stream
+CREATE TASK task_cleanup_metrics_page_facebook
+  WAREHOUSE = wh_social
+  SCHEDULE = 'USING CRON 0 1 * * * America/Bogota' AS
+  BEGIN
+    TRUNCATE TABLE tmp_metrics_page_facebook;
+    CREATE OR REPLACE STREAM stream_metrics_page_facebook ON TABLE tmp_metrics_page_facebook;
+  END;
+```
+
 ## 4. Technology choices & rationale
 
 | Decision | Chosen | Rejected | Why |
@@ -73,6 +130,10 @@ moment it happens, not the next morning.
 | RAW & CURATED layers | **Two separate jobs** | Single RAW→CURATED job | Reprocess CURATED without hitting the APIs again, and isolate transformation failures from ingestion. |
 | Sentiment | **Sequential LLM job** | Parallel with the rest | Depends on comments already being extracted, respects the LLM rate limit, and saves cost: if extraction fails, it doesn't run. |
 | Failure alerting | **Step Functions `Catch` → SNS publish** | Silent failures / manual checks | Each branch notifies on failure with full context; the pipeline fails loud, and failures are retried per branch. |
+| Warehouse load | **Snowpipe auto-ingest (S3 event → SQS)** | Scheduled `COPY` / batch pull | Near-real-time, event-driven, pay-per-file; no polling and no cron to babysit. |
+| Warehouse access | **Storage integration** | Access keys in Snowflake | No long-lived credentials; access is granted to a role, not a key. |
+| Idempotent upsert | **Stream (CDC) + Task + `MERGE`** | Full table reload each run | Only new rows are processed; restatements update in place; no duplicates. |
+| Load vs. transform | **Landing table + `MERGE` to curated** | `COPY` straight into the final table | Decouples ingest from transform; enables JSON flattening and dedup before publishing. |
 | Infrastructure | **Terraform** (modules) | AWS console by hand | Versioned IaC, reproducible per environment (sandbox/QA/prod), with reusable modules (glue, iam, s3, eventbridge+stepfunction). |
 
 ## 5. Cost & scalability
@@ -90,6 +151,7 @@ but the third-party API rate limits, mitigated with retries and by running the L
 - Safe reprocessing thanks to the RAW/CURATED split and Iceberg versioning.
 - Infrastructure reproducible per environment with a single `terraform apply`.
 - Failures are alerted in real time via SNS (which job, why, when), so problems surface immediately.
+- Curated data lands in Snowflake within minutes of hitting S3 (event-driven), continuously feeding the warehouse and the agentic layer of Case 02 — no batch window, no manual load.
 
 ## 7. Possible improvements
 
@@ -97,7 +159,8 @@ but the third-party API rate limits, mitigated with retries and by running the L
 - Declarative **data quality** (e.g. Great Expectations / Glue Data Quality) with alerts.
 - Schema **contracts** per source to version API changes explicitly.
 - Pipeline **observability** (freshness and volume metrics per run) and a data catalog.
+- Consolidate the Stream + Task + `MERGE` into a single **Dynamic Table** for a more declarative, self-maintaining transform layer.
 
 ---
 
-**Stack:** `AWS S3` · `Apache Iceberg` · `AWS Glue` · `Athena` · `Glue Catalog` · `Step Functions` · `EventBridge` · `SNS (failure alerts)` · `Terraform` · `Python` · `LLM (sentiment analysis)`
+**Stack:** `AWS S3` · `Apache Iceberg` · `AWS Glue` · `Athena` · `Glue Catalog` · `Step Functions` · `EventBridge` · `SNS (failure alerts)` · `Snowflake` · `Snowpipe` · `Streams & Tasks` · `Storage Integration` · `Terraform` · `Python` · `LLM (sentiment analysis)`

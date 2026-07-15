@@ -74,6 +74,8 @@ curated metrics and human-readable names, so the model never touches raw columns
 governed definitions. Response instructions force the agent to cite sources (document + date + link)
 and to translate column names into natural language.
 
+**Where the data comes from:** the governed tables these agents query are continuously fed by an event-driven pipeline — a lake writes curated files to S3 and a Snowflake Snowpipe → Stream → Task flow loads them into the warehouse (see **[Case 01](../01-social-media-data-lake/)**).
+
 ## 4. Technology choices & rationale
 
 | Decision | Chosen | Rejected | Why |
