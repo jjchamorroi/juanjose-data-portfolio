@@ -50,6 +50,7 @@
   .contact-grid a,.contact-grid span{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);
     background:var(--card);padding:10px 15px;border-radius:12px;color:var(--tx);font-size:14px}
   .contact-grid a:hover{border-color:var(--acc);color:var(--acc)}
+  .diagram-cap{color:var(--mut);font-size:12px;margin:2px 0 8px;font-weight:600}
 </style>
 </head>
 <body>
@@ -185,6 +186,84 @@
   <path d="M600,150 C640,120 680,110 715,104" fill="none" stroke="#c05364" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#rednote)"/>
   <path d="M880,250 C905,190 880,135 858,108" fill="none" stroke="#c05364" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#rednote)"/>
   <text x="660" y="120" text-anchor="middle" class="sub" fill="#c05364">on failure</text>
+</svg>
+</div>
+      <p class="diagram-cap">Event-driven load into Snowflake — Snowpipe → Stream → Task</p>
+      <div class="diagram"><svg preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 430" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 z" fill="#5b6b7b"/>
+    </marker>
+    <style>
+      .lbl{font-size:12px;fill:#1f2d3d;} .lblb{font-size:12px;font-weight:700;fill:#1f2d3d;}
+      .sub{font-size:9.5px;fill:#5b6b7b;} .title{font-size:15px;font-weight:700;fill:#1f2d3d;}
+      .flow{stroke:#5b6b7b;stroke-width:1.6;fill:none;marker-end:url(#arrow);}
+      .evt{stroke:#d59433;stroke-width:1.5;fill:none;marker-end:url(#arrow);stroke-dasharray:4 3;}
+    </style>
+  </defs>
+  <rect width="1000" height="430" fill="#ffffff"/>
+  <text x="30" y="28" class="title">Event-driven load into Snowflake — Snowpipe → Stream (CDC) → Task MERGE</text>
+  <text x="30" y="48" class="sub">Continuous, near-real-time load of CURATED data into the warehouse · idempotent upsert on business key</text>
+
+  <!-- AWS side -->
+  <rect x="24" y="70" width="300" height="150" rx="12" fill="#fbf7ee" stroke="#e0c07a" stroke-dasharray="6 4"/>
+  <text x="40" y="90" class="sub" fill="#8a5a00" font-weight="700">AWS (data lake side)</text>
+  <rect x="44" y="104" width="260" height="48" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
+  <text x="174" y="124" text-anchor="middle" class="lblb">CURATED on S3 (parquet)</text>
+  <text x="174" y="139" text-anchor="middle" class="sub">new object written by the Glue job</text>
+  <rect x="44" y="162" width="260" height="46" rx="9" fill="#fdeef0" stroke="#c05364"/>
+  <text x="174" y="182" text-anchor="middle" class="lbl">S3 event notification → SQS</text>
+  <text x="174" y="197" text-anchor="middle" class="sub">queues the new-file event</text>
+  <path class="evt" d="M174,152 L174,160"/>
+
+  <!-- Snowflake side -->
+  <rect x="352" y="66" width="624" height="300" rx="12" fill="#eef6fb" stroke="#5aa6d6" stroke-dasharray="6 4"/>
+  <text x="368" y="86" class="sub" fill="#2f6f96" font-weight="700">SNOWFLAKE — secure access via STORAGE INTEGRATION (no long-lived keys)</text>
+
+  <rect x="368" y="100" width="150" height="54" rx="9" fill="#e9f6f8" stroke="#3a9bad"/>
+  <text x="443" y="121" text-anchor="middle" class="lblb">External Stage</text>
+  <text x="443" y="136" text-anchor="middle" class="sub">points at CURATED</text>
+  <text x="443" y="148" text-anchor="middle" class="sub">parquet file format</text>
+
+  <rect x="540" y="100" width="160" height="54" rx="9" fill="#eafaf1" stroke="#3ba368"/>
+  <text x="620" y="121" text-anchor="middle" class="lblb">Snowpipe</text>
+  <text x="620" y="136" text-anchor="middle" class="sub">AUTO_INGEST = TRUE</text>
+  <text x="620" y="148" text-anchor="middle" class="sub">COPY, MATCH_BY_COLUMN_NAME</text>
+
+  <rect x="722" y="100" width="160" height="54" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="802" y="121" text-anchor="middle" class="lblb">TMP landing table</text>
+  <text x="802" y="139" text-anchor="middle" class="sub">raw copy of new files</text>
+
+  <path class="evt" d="M304,185 C330,150 340,130 366,127"/>
+  <text x="330" y="115" class="sub" fill="#d59433">SQS notifies pipe</text>
+  <path class="flow" d="M518,127 L538,127"/>
+  <path class="flow" d="M700,127 L720,127"/>
+
+  <!-- stream + task -->
+  <rect x="540" y="188" width="160" height="52" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="620" y="209" text-anchor="middle" class="lblb">Stream (CDC)</text>
+  <text x="620" y="226" text-anchor="middle" class="sub">tracks new rows in TMP</text>
+  <path class="flow" d="M802,154 C802,180 720,195 702,205"/>
+
+  <rect x="540" y="256" width="300" height="60" rx="9" fill="#efeafd" stroke="#7a5fc0"/>
+  <text x="690" y="277" text-anchor="middle" class="lblb">Task — WHEN stream has data → MERGE</text>
+  <text x="690" y="294" text-anchor="middle" class="sub">idempotent upsert on (page_id, metric_date)</text>
+  <text x="690" y="307" text-anchor="middle" class="sub">+ flattens nested JSON columns</text>
+  <path class="flow" d="M620,240 L620,254"/>
+
+  <rect x="368" y="256" width="150" height="60" rx="9" fill="#eafaf1" stroke="#3ba368"/>
+  <text x="443" y="280" text-anchor="middle" class="lblb">Curated table</text>
+  <text x="443" y="297" text-anchor="middle" class="sub">analytics-ready</text>
+  <path class="flow" d="M538,286 L520,286"/>
+
+  <text x="368" y="342" class="sub" fill="#5b6b7b">Nightly cleanup task truncates TMP and resets the stream · RBAC grants read to governance / data-catalog roles.</text>
+
+  <!-- bridge to case 02 -->
+  <rect x="368" y="352" width="150" height="0" />
+  <path class="flow" d="M443,316 L443,344"/>
+  <rect x="368" y="352" width="230" height="0"/>
+  <text x="443" y="392" text-anchor="middle" class="lblb" fill="#5f47a8">→ feeds Case 02 (Cortex agents)</text>
+  <text x="443" y="408" text-anchor="middle" class="sub">same warehouse the agentic layer queries</text>
 </svg>
 </div>
       <a class="btn" href="https://github.com/jjchamorroi/juanjose-data-portfolio/blob/main/cases/01-social-media-data-lake/README.md" target="_blank" rel="noopener">Read full case →</a>
