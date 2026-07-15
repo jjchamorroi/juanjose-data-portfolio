@@ -275,7 +275,7 @@
       </div>
       <p class="summary">A conversational analytics layer: Snowflake Cortex agents answer natural-language questions by combining text-to-SQL over a semantic layer, vector search and MCP tool servers — behind a FastAPI API that persists conversations in PostgreSQL (persist-then-call resilience) and a Keycloak-authenticated chat SPA.</p>
       <div class="chips"><span class="chip">Snowflake Cortex</span><span class="chip">Semantic Views</span><span class="chip">vector search</span><span class="chip">MCP</span><span class="chip">FastAPI</span><span class="chip">PostgreSQL</span><span class="chip">Keycloak</span><span class="chip">SPA</span></div>
-      <div class="diagram"><svg preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 720" font-family="Segoe UI, Arial, sans-serif">
+      <div class="diagram"><svg preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 690" font-family="Segoe UI, Arial, sans-serif">
   <defs>
     <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L7,3 L0,6 z" fill="#5b6b7b"/>
@@ -284,100 +284,101 @@
       .lbl{font-size:12.5px;fill:#1f2d3d;} .lblb{font-size:12.5px;font-weight:700;fill:#1f2d3d;}
       .sub{font-size:10px;fill:#5b6b7b;} .title{font-size:16px;font-weight:700;fill:#1f2d3d;}
       .phase{font-size:11.5px;font-weight:700;} .flow{stroke:#5b6b7b;stroke-width:1.6;fill:none;marker-end:url(#arrow);}
-      .route{stroke:#8a5a00;stroke-width:1.5;fill:none;marker-end:url(#arrow);stroke-dasharray:4 3;}
+      .route{stroke:#8a5a00;stroke-width:1.4;fill:none;marker-end:url(#arrow);stroke-dasharray:4 3;}
       .dash{stroke:#9aa7b4;stroke-width:1.3;fill:none;stroke-dasharray:4 3;marker-end:url(#arrow);}
     </style>
   </defs>
-  <rect width="1000" height="720" fill="#ffffff"/>
+  <rect width="1000" height="690" fill="#ffffff"/>
   <text x="30" y="28" class="title">Agentic analytics over the data warehouse (Snowflake Cortex)</text>
-  <text x="30" y="48" class="sub">NL chat → agent routing → text-to-SQL + semantic search + tool servers · grounded on governed data · conversations persisted</text>
+  <text x="30" y="48" class="sub">NL chat → agent routing → text-to-SQL + semantic search + tool servers · grounded on governed data</text>
 
-  <!-- client + orchestration tier -->
-  <rect x="30" y="66" width="150" height="56" rx="9" fill="#e9f6f8" stroke="#3a9bad"/>
-  <text x="105" y="89" text-anchor="middle" class="lblb">SPA chat UI</text>
-  <text x="105" y="106" text-anchor="middle" class="sub">Vite · charts + chips</text>
+  <!-- client tier -->
+  <rect x="40" y="72" width="150" height="54" rx="9" fill="#e9f6f8" stroke="#3a9bad"/>
+  <text x="115" y="94" text-anchor="middle" class="lblb">SPA chat UI</text>
+  <text x="115" y="110" text-anchor="middle" class="sub">Vite · charts + chips</text>
 
-  <rect x="210" y="66" width="185" height="56" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
-  <text x="302" y="86" text-anchor="middle" class="lblb">FastAPI orchestration</text>
-  <text x="302" y="102" text-anchor="middle" class="sub">1 endpoint · typed `parts`</text>
-  <text x="302" y="115" text-anchor="middle" class="sub">persist-then-call · retry UX</text>
+  <rect x="255" y="72" width="185" height="54" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="347" y="94" text-anchor="middle" class="lblb">FastAPI orchestration</text>
+  <text x="347" y="110" text-anchor="middle" class="sub">1 endpoint · typed `parts`</text>
 
-  <rect x="425" y="66" width="200" height="56" rx="9" fill="#efeafd" stroke="#7a5fc0"/>
-  <text x="525" y="86" text-anchor="middle" class="lblb">Cortex Agent (LLM)</text>
-  <text x="525" y="102" text-anchor="middle" class="sub">routing rules · cites sources</text>
-  <text x="525" y="115" text-anchor="middle" class="sub">hides SQL/schema</text>
+  <rect x="505" y="72" width="200" height="54" rx="9" fill="#efeafd" stroke="#7a5fc0"/>
+  <text x="605" y="94" text-anchor="middle" class="lblb">Cortex Agent (LLM)</text>
+  <text x="605" y="110" text-anchor="middle" class="sub">routing · cites sources</text>
 
-  <path class="flow" d="M180,88 L208,88"/><path class="flow" d="M208,104 L182,104"/>
-  <path class="flow" d="M395,92 L423,92"/>
-  <text x="410" y="84" text-anchor="middle" class="sub">:run</text>
+  <path class="flow" d="M190,90 L253,90"/>
+  <path class="flow" d="M253,108 L192,108"/>
+  <path class="flow" d="M440,97 L503,97"/>
+  <text x="472" y="90" text-anchor="middle" class="sub">:run</text>
 
-  <!-- identity + persistence -->
-  <rect x="650" y="60" width="150" height="52" rx="9" fill="#fff4e6" stroke="#d59433"/>
-  <text x="725" y="81" text-anchor="middle" class="lbl">Keycloak (OIDC)</text>
-  <text x="725" y="97" text-anchor="middle" class="sub">SPA auth · user scope</text>
-  <rect x="820" y="60" width="150" height="52" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
-  <text x="895" y="81" text-anchor="middle" class="lbl">PostgreSQL</text>
-  <text x="895" y="97" text-anchor="middle" class="sub">threads + messages</text>
-  <path class="dash" d="M180,74 C420,36 560,50 648,74"/>
-  <path class="flow" d="M395,80 C520,44 720,52 818,74"/>
-  <text x="470" y="44" text-anchor="middle" class="sub" fill="#5b6b7b">authenticate · persist user message first</text>
+  <!-- orchestration sub-tier (under FastAPI, no crossing) -->
+  <rect x="230" y="150" width="130" height="46" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="295" y="169" text-anchor="middle" class="lbl">Keycloak</text>
+  <text x="295" y="184" text-anchor="middle" class="sub">SPA auth · user scope</text>
+  <rect x="378" y="150" width="150" height="46" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
+  <text x="453" y="169" text-anchor="middle" class="lbl">PostgreSQL</text>
+  <text x="453" y="184" text-anchor="middle" class="sub">threads + messages</text>
+  <path class="flow" d="M320,126 L300,148"/>
+  <path class="flow" d="M375,126 L430,148"/>
+  <text x="548" y="176" class="sub" fill="#5b6b7b">persist user message first,</text>
+  <text x="548" y="190" class="sub" fill="#5b6b7b">then call the warehouse (retry UX)</text>
 
   <!-- Snowflake box -->
-  <rect x="30" y="190" width="940" height="470" rx="12" fill="#f7f9fc" stroke="#b8c2cc" stroke-dasharray="6 4"/>
-  <text x="46" y="213" class="phase" fill="#5b6b7b">SNOWFLAKE — governed data + AI (no data leaves the warehouse)</text>
+  <rect x="40" y="220" width="920" height="440" rx="12" fill="#f7f9fc" stroke="#b8c2cc" stroke-dasharray="6 4"/>
+  <text x="56" y="243" class="phase" fill="#5b6b7b">SNOWFLAKE — governed data + AI (no data leaves the warehouse)</text>
+  <text x="605" y="267" text-anchor="middle" class="sub" fill="#8a5a00">routing rules by question type ↓</text>
 
-  <!-- 4 tools -->
-  <rect x="60" y="234" width="200" height="54" rx="9" fill="#fff4e6" stroke="#d59433"/>
-  <text x="160" y="256" text-anchor="middle" class="lblb">Cortex Analyst</text>
-  <text x="160" y="273" text-anchor="middle" class="sub">text-to-SQL (quantitative)</text>
-  <rect x="285" y="234" width="200" height="54" rx="9" fill="#fff4e6" stroke="#d59433"/>
-  <text x="385" y="256" text-anchor="middle" class="lblb">Cortex Search</text>
-  <text x="385" y="273" text-anchor="middle" class="sub">semantic / vector search</text>
-  <rect x="510" y="234" width="200" height="54" rx="9" fill="#fff4e6" stroke="#d59433"/>
-  <text x="610" y="256" text-anchor="middle" class="lblb">MCP tool servers</text>
-  <text x="610" y="273" text-anchor="middle" class="sub">relationships · entity detail</text>
-  <rect x="735" y="234" width="205" height="54" rx="9" fill="#fdeef0" stroke="#c05364"/>
-  <text x="837" y="256" text-anchor="middle" class="lblb">Action: stored proc</text>
-  <text x="837" y="273" text-anchor="middle" class="sub">email report (on request)</text>
+  <!-- 4 tools row -->
+  <rect x="70"  y="284" width="200" height="56" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="170" y="306" text-anchor="middle" class="lblb">Cortex Analyst</text>
+  <text x="170" y="323" text-anchor="middle" class="sub">text-to-SQL (quantitative)</text>
+  <rect x="290" y="284" width="200" height="56" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="390" y="306" text-anchor="middle" class="lblb">Cortex Search</text>
+  <text x="390" y="323" text-anchor="middle" class="sub">semantic / vector search</text>
+  <rect x="510" y="284" width="200" height="56" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="610" y="306" text-anchor="middle" class="lblb">MCP tool servers</text>
+  <text x="610" y="323" text-anchor="middle" class="sub">relationships · entity detail</text>
+  <rect x="730" y="284" width="200" height="56" rx="9" fill="#fdeef0" stroke="#c05364"/>
+  <text x="830" y="306" text-anchor="middle" class="lblb">Action: stored proc</text>
+  <text x="830" y="323" text-anchor="middle" class="sub">email report (on request)</text>
 
-  <path class="route" d="M480,124 C360,175 250,205 175,232"/>
-  <path class="route" d="M510,124 C450,180 410,208 388,232"/>
-  <path class="route" d="M560,124 C590,180 605,208 612,232"/>
-  <path class="route" d="M590,122 C720,175 800,205 835,232"/>
-  <text x="300" y="205" text-anchor="middle" class="sub" fill="#8a5a00">routing rules by question type</text>
+  <path class="route" d="M580,126 C420,200 250,250 175,282"/>
+  <path class="route" d="M595,126 C500,210 420,255 390,282"/>
+  <path class="route" d="M615,126 C640,210 620,255 610,282"/>
+  <path class="route" d="M630,126 C760,200 810,250 830,282"/>
 
-  <!-- semantic layer -->
-  <rect x="60" y="330" width="425" height="58" rx="9" fill="#eafaf1" stroke="#3ba368"/>
-  <text x="272" y="353" text-anchor="middle" class="lblb">Semantic layer — Semantic Views</text>
-  <text x="272" y="371" text-anchor="middle" class="sub">friendly names + vetted calculations · governance boundary (no raw columns)</text>
-  <path class="flow" d="M160,288 L200,328"/>
-  <rect x="510" y="330" width="200" height="58" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
-  <text x="610" y="353" text-anchor="middle" class="lblb">Embeddings index</text>
-  <text x="610" y="371" text-anchor="middle" class="sub">from documents / transcripts</text>
-  <path class="flow" d="M385,288 L520,328"/>
+  <!-- data layer row -->
+  <rect x="70"  y="380" width="200" height="54" rx="9" fill="#eafaf1" stroke="#3ba368"/>
+  <text x="170" y="402" text-anchor="middle" class="lblb">Semantic Views</text>
+  <text x="170" y="419" text-anchor="middle" class="sub">friendly names + calcs</text>
+  <rect x="290" y="380" width="200" height="54" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
+  <text x="390" y="402" text-anchor="middle" class="lblb">Embeddings index</text>
+  <text x="390" y="419" text-anchor="middle" class="sub">from documents</text>
+  <rect x="510" y="380" width="200" height="54" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="610" y="402" text-anchor="middle" class="lbl">Domain lookups</text>
+  <text x="610" y="419" text-anchor="middle" class="sub">served by MCP</text>
+  <rect x="730" y="380" width="200" height="54" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="830" y="402" text-anchor="middle" class="lbl">Virtual warehouse</text>
+  <text x="830" y="419" text-anchor="middle" class="sub">shared compute · timeouts</text>
+  <path class="flow" d="M170,340 L170,378"/>
+  <path class="flow" d="M390,340 L390,378"/>
+  <path class="flow" d="M610,340 L610,378"/>
+  <path class="dash" d="M830,340 L830,378"/>
 
-  <!-- base data -->
-  <rect x="60" y="440" width="200" height="54" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
-  <text x="160" y="462" text-anchor="middle" class="lbl">Base tables</text>
-  <text x="160" y="478" text-anchor="middle" class="sub">governed source data</text>
-  <rect x="285" y="440" width="200" height="54" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
-  <text x="385" y="462" text-anchor="middle" class="lbl">Dynamic Tables</text>
-  <text x="385" y="478" text-anchor="middle" class="sub">incremental refresh</text>
-  <rect x="510" y="440" width="200" height="54" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
-  <text x="610" y="462" text-anchor="middle" class="lbl">Documents (PDF/text)</text>
-  <text x="610" y="478" text-anchor="middle" class="sub">source for embeddings</text>
-  <rect x="735" y="440" width="205" height="54" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
-  <text x="837" y="462" text-anchor="middle" class="lbl">Virtual warehouse</text>
-  <text x="837" y="478" text-anchor="middle" class="sub">shared compute · query timeouts</text>
-  <path class="flow" d="M200,388 L180,438"/>
-  <path class="flow" d="M330,388 L360,438"/>
-  <path class="flow" d="M610,388 L610,438"/>
+  <!-- base data row -->
+  <rect x="70"  y="470" width="200" height="54" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="170" y="492" text-anchor="middle" class="lbl">Base tables · Dynamic Tables</text>
+  <text x="170" y="509" text-anchor="middle" class="sub">governed source · incremental</text>
+  <rect x="290" y="470" width="200" height="54" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="390" y="492" text-anchor="middle" class="lbl">Documents (PDF/text)</text>
+  <text x="390" y="509" text-anchor="middle" class="sub">source for embeddings</text>
+  <path class="flow" d="M170,434 L170,468"/>
+  <path class="flow" d="M390,434 L390,468"/>
 
-  <text x="500" y="560" text-anchor="middle" class="sub" fill="#5b6b7b">Grounding: quantitative answers resolve through the Semantic View; "find/where" answers resolve through the embeddings index; both are citable.</text>
-  <text x="500" y="588" text-anchor="middle" class="sub" fill="#5b6b7b">Cross-reference keys let the agent join content (from search) with metrics (from SQL) in a single answer.</text>
-  <text x="500" y="628" text-anchor="middle" class="sub" fill="#5b6b7b">Response parts (text · Vega-Lite chart · suggested queries) are normalized by FastAPI and rendered by the SPA.</text>
-</svg>
-</div>
+  <text x="500" y="566" text-anchor="middle" class="sub" fill="#5b6b7b">Governance boundary: quantitative answers resolve through Semantic Views (no raw columns); "find/where" answers through the embeddings index — both citable.</text>
+  <text x="500" y="590" text-anchor="middle" class="sub" fill="#5b6b7b">Cross-reference keys let the agent join content (search) with metrics (SQL) in a single answer.</text>
+  <text x="500" y="614" text-anchor="middle" class="sub" fill="#5b6b7b">Response parts (text · Vega-Lite chart · suggested queries) are normalized by FastAPI and rendered by the SPA.</text>
+  <text x="500" y="638" text-anchor="middle" class="sub" fill="#5f47a8">Tables fed continuously by the event-driven pipeline in Case 01 (Snowpipe → Stream → Task).</text>
+</svg></div>
       <a class="btn" href="https://github.com/jjchamorroi/juanjose-data-portfolio/blob/main/cases/02-agentic-analytics-warehouse/README.md" target="_blank" rel="noopener">Read full case →</a>
     </article>
     <article class="card" id="case-03">
@@ -387,7 +388,7 @@
       </div>
       <p class="summary">A reusable Terraform platform on ECS Fargate + shared ALB + CloudFront/S3, instantiated for two production apps that share the backbone but differ in one deliberate choice — the database (PostgreSQL for a transactional app, DocumentDB for a national-scale event app).</p>
       <div class="chips"><span class="chip">Terraform</span><span class="chip">ECS Fargate</span><span class="chip">ALB</span><span class="chip">CloudFront + S3</span><span class="chip">RDS PostgreSQL</span><span class="chip">DocumentDB</span><span class="chip">WAF</span><span class="chip">Keycloak</span><span class="chip">k6</span></div>
-      <div class="diagram"><svg preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 640" font-family="Segoe UI, Arial, sans-serif">
+      <div class="diagram"><svg preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;display:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 660" font-family="Segoe UI, Arial, sans-serif">
   <defs>
     <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L7,3 L0,6 z" fill="#5b6b7b"/>
@@ -399,95 +400,102 @@
       .dash{stroke:#9aa7b4;stroke-width:1.3;fill:none;stroke-dasharray:4 3;marker-end:url(#arrow);}
     </style>
   </defs>
-  <rect width="1000" height="640" fill="#ffffff"/>
+  <rect width="1000" height="660" fill="#ffffff"/>
   <text x="30" y="30" class="title">Cloud platform (Terraform) — ECS Fargate + shared ALB + CloudFront</text>
   <text x="30" y="50" class="sub">One reusable blueprint · per-environment tfvars (sandbox / QA / prod) · proven at national scale</text>
 
-  <!-- user -->
-  <rect x="30" y="90" width="110" height="50" rx="9" fill="#e9f6f8" stroke="#3a9bad"/>
-  <text x="85" y="120" text-anchor="middle" class="lblb">Users</text>
+  <!-- top edge flow (spread out) -->
+  <rect x="30" y="96" width="120" height="54" rx="9" fill="#e9f6f8" stroke="#3a9bad"/>
+  <text x="90" y="127" text-anchor="middle" class="lblb">Users</text>
 
-  <!-- edge -->
-  <rect x="175" y="70" width="150" height="46" rx="9" fill="#fdeef0" stroke="#c05364"/>
-  <text x="250" y="90" text-anchor="middle" class="lblb">WAF</text>
-  <text x="250" y="106" text-anchor="middle" class="sub">edge protection</text>
-  <rect x="175" y="128" width="150" height="52" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
-  <text x="250" y="150" text-anchor="middle" class="lblb">CloudFront</text>
-  <text x="250" y="167" text-anchor="middle" class="sub">CDN · TLS (ACM)</text>
-  <path class="flow" d="M140,115 L173,110"/>
-  <path class="flow" d="M140,120 L173,150"/>
+  <rect x="190" y="96" width="130" height="54" rx="9" fill="#fdeef0" stroke="#c05364"/>
+  <text x="255" y="118" text-anchor="middle" class="lblb">WAF</text>
+  <text x="255" y="134" text-anchor="middle" class="sub">edge protection</text>
 
-  <!-- S3 static -->
-  <rect x="360" y="70" width="170" height="52" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
-  <text x="445" y="91" text-anchor="middle" class="lblb">S3 — static SPA</text>
-  <text x="445" y="108" text-anchor="middle" class="sub">private origin (OAC)</text>
-  <path class="flow" d="M325,145 C340,120 350,105 358,98"/>
-  <text x="352" y="135" class="sub">assets</text>
+  <rect x="360" y="96" width="160" height="54" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="440" y="118" text-anchor="middle" class="lblb">CloudFront</text>
+  <text x="440" y="134" text-anchor="middle" class="sub">CDN · TLS (ACM) · Route 53</text>
 
-  <!-- ALB -->
-  <rect x="360" y="140" width="170" height="56" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
-  <text x="445" y="162" text-anchor="middle" class="lblb">Shared ALB</text>
-  <text x="445" y="179" text-anchor="middle" class="sub">host/path rules → target groups</text>
-  <path class="flow" d="M325,160 L358,165"/>
-  <text x="342" y="200" class="sub">/api/*</text>
+  <path class="flow" d="M150,123 L188,123"/>
+  <path class="flow" d="M320,123 L358,123"/>
 
-  <!-- VPC container -->
-  <rect x="360" y="220" width="610" height="300" rx="12" fill="#f7f9fc" stroke="#b8c2cc" stroke-dasharray="6 4"/>
-  <text x="376" y="243" class="phase" fill="#5b6b7b">VPC — private subnets (no public IPs) · persistence = the one swappable module (RDS ↔ DocumentDB)</text>
+  <!-- branches -->
+  <rect x="580" y="60" width="200" height="52" rx="9" fill="#f3f0fa" stroke="#8267c4"/>
+  <text x="680" y="81" text-anchor="middle" class="lblb">S3 — static SPA</text>
+  <text x="680" y="97" text-anchor="middle" class="sub">private origin (OAC)</text>
+  <path class="flow" d="M520,110 L578,88"/>
+  <text x="548" y="82" class="sub">assets</text>
 
-  <!-- ECS services -->
-  <rect x="390" y="260" width="200" height="60" rx="9" fill="#eafaf1" stroke="#3ba368"/>
-  <text x="490" y="283" text-anchor="middle" class="lblb">ECS Fargate — API</text>
-  <text x="490" y="300" text-anchor="middle" class="sub">FastAPI · autoscaled tasks</text>
-  <rect x="390" y="335" width="200" height="52" rx="9" fill="#eafaf1" stroke="#3ba368" stroke-dasharray="3 2"/>
-  <text x="490" y="356" text-anchor="middle" class="lbl">ECS — additional service</text>
-  <text x="490" y="372" text-anchor="middle" class="sub">SSR / worker (same ALB)</text>
-  <path class="flow" d="M445,196 C445,220 470,245 486,258"/>
-  <path class="dash" d="M460,196 C520,225 540,300 540,333"/>
+  <rect x="580" y="140" width="200" height="54" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="680" y="162" text-anchor="middle" class="lblb">Shared ALB</text>
+  <text x="680" y="178" text-anchor="middle" class="sub">host/path rules → target groups</text>
+  <path class="flow" d="M520,136 L578,160"/>
+  <text x="545" y="158" class="sub">/api/*</text>
 
-  <!-- data stores -->
-  <rect x="640" y="260" width="150" height="56" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
-  <text x="715" y="282" text-anchor="middle" class="lbl">RDS PostgreSQL</text>
-  <text x="715" y="299" text-anchor="middle" class="sub">App A · transactional (ACID)</text>
-  <rect x="810" y="260" width="140" height="56" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
-  <text x="880" y="282" text-anchor="middle" class="lbl">DocumentDB</text>
-  <text x="880" y="299" text-anchor="middle" class="sub">App B · event scale</text>
-  <path class="flow" d="M590,288 L638,288"/>
-  <path class="dash" d="M590,278 C700,255 780,258 808,282"/>
+  <!-- VPC -->
+  <rect x="30" y="234" width="700" height="392" rx="12" fill="#f7f9fc" stroke="#b8c2cc" stroke-dasharray="6 4"/>
+  <text x="46" y="257" class="phase" fill="#5b6b7b">VPC — private subnets (no public IPs)</text>
+  <text x="46" y="274" class="sub" fill="#5b6b7b">Persistence is the one swappable module: RDS ↔ DocumentDB</text>
 
-  <rect x="640" y="335" width="150" height="52" rx="9" fill="#fff4e6" stroke="#d59433"/>
-  <text x="715" y="356" text-anchor="middle" class="lbl">Secrets Manager</text>
-  <text x="715" y="372" text-anchor="middle" class="sub">config injected</text>
-  <rect x="810" y="335" width="140" height="52" rx="9" fill="#fff4e6" stroke="#d59433"/>
-  <text x="880" y="356" text-anchor="middle" class="lbl">ECR</text>
-  <text x="880" y="372" text-anchor="middle" class="sub">container images</text>
-  <path class="flow" d="M590,300 C610,325 625,340 638,352"/>
-  <path class="dash" d="M590,310 C700,360 800,360 810,358"/>
+  <!-- col 1 -->
+  <rect x="55" y="292" width="200" height="58" rx="9" fill="#eafaf1" stroke="#3ba368"/>
+  <text x="155" y="315" text-anchor="middle" class="lblb">ECS Fargate — API</text>
+  <text x="155" y="332" text-anchor="middle" class="sub">autoscaled tasks</text>
+  <rect x="55" y="366" width="200" height="52" rx="9" fill="#eafaf1" stroke="#3ba368" stroke-dasharray="3 2"/>
+  <text x="155" y="387" text-anchor="middle" class="lbl">ECS — additional service</text>
+  <text x="155" y="403" text-anchor="middle" class="sub">SSR / worker (same ALB)</text>
+  <rect x="55" y="434" width="200" height="52" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
+  <text x="155" y="455" text-anchor="middle" class="lbl">Keycloak (OIDC)</text>
+  <text x="155" y="471" text-anchor="middle" class="sub">JWT · JWKS validation</text>
 
-  <!-- external services -->
-  <rect x="390" y="410" width="200" height="50" rx="9" fill="#eef4ff" stroke="#4a7bd4"/>
-  <text x="490" y="431" text-anchor="middle" class="lbl">Keycloak (OIDC)</text>
-  <text x="490" y="447" text-anchor="middle" class="sub">JWT · API validates via JWKS</text>
-  <rect x="640" y="410" width="150" height="50" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
-  <text x="715" y="431" text-anchor="middle" class="lbl">S3 media</text>
-  <text x="715" y="447" text-anchor="middle" class="sub">presigned URLs</text>
-  <rect x="810" y="410" width="140" height="50" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
-  <text x="880" y="431" text-anchor="middle" class="lbl">SES</text>
-  <text x="880" y="447" text-anchor="middle" class="sub">transactional email</text>
-  <path class="dash" d="M490,387 L490,408"/>
-  <path class="dash" d="M560,320 C620,390 690,400 710,408"/>
-  <path class="dash" d="M560,315 C700,400 830,400 855,408"/>
+  <!-- col 2 -->
+  <rect x="280" y="292" width="185" height="58" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="372" y="313" text-anchor="middle" class="lbl">RDS PostgreSQL</text>
+  <text x="372" y="330" text-anchor="middle" class="sub">App A · transactional (ACID)</text>
+  <rect x="280" y="366" width="185" height="52" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="372" y="387" text-anchor="middle" class="lbl">Secrets Manager</text>
+  <text x="372" y="403" text-anchor="middle" class="sub">config injected</text>
+  <rect x="280" y="434" width="185" height="52" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="372" y="455" text-anchor="middle" class="lbl">S3 media</text>
+  <text x="372" y="471" text-anchor="middle" class="sub">presigned URLs</text>
 
-  <!-- IaC footer -->
-  <rect x="30" y="470" width="300" height="140" rx="12" fill="#f6f8fa" stroke="#b8c2cc"/>
-  <text x="180" y="494" text-anchor="middle" class="phase" fill="#5b6b7b">TERRAFORM (IaC)</text>
-  <text x="180" y="518" text-anchor="middle" class="sub">modules: vpc · ecr · secrets · frontend</text>
-  <text x="180" y="536" text-anchor="middle" class="sub">public_alb · ecs_backend · ecs_additional</text>
-  <text x="180" y="554" text-anchor="middle" class="sub">rds · documentdb · dns · waf · bastion_ssm</text>
-  <text x="180" y="578" text-anchor="middle" class="sub">names = project_name + environment</text>
-  <text x="180" y="596" text-anchor="middle" class="sub">remote state in S3 · sandbox / QA / prod</text>
-</svg>
-</div>
+  <!-- col 3 -->
+  <rect x="490" y="292" width="215" height="58" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="597" y="313" text-anchor="middle" class="lbl">DocumentDB</text>
+  <text x="597" y="330" text-anchor="middle" class="sub">App B · event scale</text>
+  <rect x="490" y="366" width="215" height="52" rx="9" fill="#fff4e6" stroke="#d59433"/>
+  <text x="597" y="387" text-anchor="middle" class="lbl">ECR</text>
+  <text x="597" y="403" text-anchor="middle" class="sub">container images</text>
+  <rect x="490" y="434" width="215" height="52" rx="9" fill="#eef2f7" stroke="#7d8da0"/>
+  <text x="597" y="455" text-anchor="middle" class="lbl">SES</text>
+  <text x="597" y="471" text-anchor="middle" class="sub">transactional email</text>
+
+  <!-- ALB into ECS -->
+  <path class="flow" d="M655,194 C560,230 320,255 175,290"/>
+  <!-- ECS to stores -->
+  <path class="flow" d="M255,318 L278,318"/>
+  <path class="dash" d="M255,330 C400,352 470,325 490,320"/>
+  <path class="dash" d="M255,340 C300,360 320,364 330,366"/>
+  <path class="dash" d="M255,352 C400,410 490,430 490,440"/>
+  <path class="dash" d="M255,400 C300,420 330,432 372,434"/>
+
+  <!-- IaC panel -->
+  <rect x="752" y="234" width="218" height="392" rx="12" fill="#f6f8fa" stroke="#b8c2cc"/>
+  <text x="861" y="258" text-anchor="middle" class="phase" fill="#5b6b7b">TERRAFORM (IaC)</text>
+  <text x="861" y="288" text-anchor="middle" class="sub">modules:</text>
+  <text x="861" y="308" text-anchor="middle" class="sub">vpc · ecr · secrets</text>
+  <text x="861" y="326" text-anchor="middle" class="sub">frontend (S3+CloudFront)</text>
+  <text x="861" y="344" text-anchor="middle" class="sub">public_alb</text>
+  <text x="861" y="362" text-anchor="middle" class="sub">ecs_backend · ecs_additional</text>
+  <text x="861" y="380" text-anchor="middle" class="sub">rds · documentdb</text>
+  <text x="861" y="398" text-anchor="middle" class="sub">dns · waf · bastion_ssm</text>
+  <text x="861" y="428" text-anchor="middle" class="sub">names = project_name</text>
+  <text x="861" y="445" text-anchor="middle" class="sub">+ environment</text>
+  <text x="861" y="475" text-anchor="middle" class="sub">remote state in S3</text>
+  <text x="861" y="493" text-anchor="middle" class="sub">sandbox / QA / prod</text>
+  <text x="861" y="523" text-anchor="middle" class="sub">k6 load tests validate</text>
+  <text x="861" y="541" text-anchor="middle" class="sub">before the traffic peak</text>
+</svg></div>
       <a class="btn" href="https://github.com/jjchamorroi/juanjose-data-portfolio/blob/main/cases/03-cloud-architecture-iac/README.md" target="_blank" rel="noopener">Read full case →</a>
     </article>
     <article class="card" id="case-04">
